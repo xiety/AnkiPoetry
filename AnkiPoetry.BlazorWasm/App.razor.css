@@ -1,0 +1,86 @@
+﻿.title {
+    font-size: 110%;
+    font-weight: bold;
+}
+
+.links {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px;
+}
+
+.parameters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 5px;
+}
+
+.parameter-name {
+    width: 100px;
+}
+
+.parameters input {
+    width: 100px;
+}
+
+.main-button {
+    font-size: 150%;
+    width: 200px;
+    height: 50px;
+}
+
+.item {
+    margin-top: 15px;
+}
+
+.item textarea {
+    width: 100%;
+    height: 10em;
+}
+
+.item .item-name {
+    font-weight: bold;
+}
+
+.item .item-buttons {
+    margin: 5px;
+}
+
+.sample-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px 5px;
+}
+
+.card {
+    border: 1px solid gray;
+    padding: 2px;
+    background-color: black;
+    color: white;
+    font-size: 14px;
+}
+
+::deep.card .line0 {
+    color: #af2acd;
+}
+
+::deep.card .line1 {
+    color: #ff6666;
+}
+
+::deep.card .line2 {
+    color: #ffbd55;
+}
+
+::deep.card .line3 {
+    color: #ffff66;
+}
+
+::deep.card .line4 {
+    color: #9de24f;
+}
+
+::deep.card .line5 {
+    color: #87cefa;
+}

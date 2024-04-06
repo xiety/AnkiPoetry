@@ -1,0 +1,38 @@
+﻿<div class="links">
+    <div class="title">Generates an Anki deck from poetry</div>
+    <a href="https://github.com/xiety/AnkiPoetry">https://github.com/xiety/AnkiPoetry</a>
+    <button @onclick="LoadHamlet">Load Hamlet</button>
+</div>
+<div class="parameters">
+    <div><div class="parameter-name">Chunk size: </div><input type="number" min="1" @bind="parameters.ChunkSize" /></div>
+    <div><div class="parameter-name">Word Wrap: </div><input type="number" min="-1" @bind="parameters.WordWrap" /></div>
+    <div><div class="parameter-name">Colors: </div><input type="number" min="1" @bind="parameters.Colors" /></div>
+</div>
+<div class="item">
+    <div class="item-name">Input:</div>
+    <textarea @bind="parameters.Text" wrap="off" />
+    <div class="item-buttons">
+        <button @onclick="Generate" class="main-button">Generate</button>
+    </div>
+</div>
+@foreach (var info in infos)
+{
+    <div class="item">
+        <div class="item-name">@info.Title:</div>
+        <textarea id="@info.Id" @bind="info.Csv" wrap="off" />
+        <div class="item-buttons">
+            <button @onclick="@(() => DownloadContent(info.Id, info.FileName))">Download '@info.FileName'</button>
+        </div>
+    </div>
+}
+<div class="item">
+    <div class="item-name">Sample:</div>
+    <div class="sample-container">
+        @foreach (var sample in samples)
+        {
+            <div class="card">
+                @((MarkupString)sample.Text)
+            </div>
+        }
+    </div>
+</div>
