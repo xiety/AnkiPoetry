@@ -6,6 +6,9 @@ Use online: https://xiety.github.io/AnkiPoetry/
 
 Example deck: https://ankiweb.net/shared/info/574333410
 
+Direct link: [docs/William_Shakespeare_-_Hamlet_monologue.apkg](https://github.com/xiety/AnkiPoetry/raw/main/docs/William_Shakespeare_-_Hamlet_monologue.apkg)
+
+
 ## UI
 
 ![Screenshot](docs/Screenshot_01.png?raw=true)
@@ -56,7 +59,9 @@ Soon after the lines deck have moved to the next page, I reveal two new cards on
 
 First import a generic deck that will contain all the required notetypes:
 
-https://ankiweb.net/shared/info/574333410
+AnkiWeb: https://ankiweb.net/shared/info/574333410
+
+Direct link: [docs/William_Shakespeare_-_Hamlet_monologue.apkg](https://github.com/xiety/AnkiPoetry/raw/main/docs/William_Shakespeare_-_Hamlet_monologue.apkg)
 
 Then create a parent deck and three subdecks: `1. word`, `2. line`, `3. page`. And import each `.csv` into the deck created for it.
 
