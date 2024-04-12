@@ -2,11 +2,11 @@
 
 public static class Chunker
 {
-    public static IEnumerable<Chunk> Run(MyDocument doc, int chunk_size)
+    public static IEnumerable<Chunk> Run(MyDocument doc, int chunk_size, bool overlap_chapters)
     {
         foreach (var section in doc.Sections)
         {
-            foreach (var song in Augmented(section.Songs))
+            foreach (var song in Augmented(section.Songs, overlap_chapters))
             {
                 var screen_number = 1;
 
@@ -20,20 +20,20 @@ public static class Chunker
         }
     }
 
-    private static IEnumerable<MySong> Augmented(MySong[] songs)
+    private static IEnumerable<MySong> Augmented(MySong[] songs, bool overlap_chapters)
     {
         for (var i = 0; i < songs.Length; ++i)
         {
             var lines = new List<MyLine>();
 
-            var textBegin = ((i != 0) ? songs[i - 1].Lines.Last().Text : "");
+            var textBegin = ((overlap_chapters && i != 0) ? songs[i - 1].Lines.Last().Text : "");
             lines.Add(new(0, textBegin, LineType.Prev));
 
             lines.AddRange(songs[i].Lines);
 
             var new_num = songs[i].Lines.Max(a => a.LineNumber) + 1;
 
-            var textEnd = ((i != songs.Length - 1) ? songs[i + 1].Lines.First().Text : "");
+            var textEnd = ((overlap_chapters && i != songs.Length - 1) ? songs[i + 1].Lines.First().Text : "");
             lines.Add(new(new_num, textEnd, LineType.Next));
 
             yield return songs[i] with { Lines = [.. lines] };

@@ -20,7 +20,7 @@
     width: 100px;
 }
 
-.parameters input {
+.parameters input[type="number"] {
     width: 100px;
 }
 
