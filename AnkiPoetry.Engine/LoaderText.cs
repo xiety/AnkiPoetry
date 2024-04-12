@@ -2,10 +2,7 @@
 
 public static partial class LoaderText
 {
-    public static MyDocument LoadFile(string file, int word_wrap, bool wrap_on_spaces)
-        => LoadLines(File.ReadAllLines(file), word_wrap, wrap_on_spaces);
-
-    public static MyDocument LoadLines(string[] lines, int word_wrap, bool wrap_on_spaces)
+    public static MyDocument LoadLines(string[] lines, int word_wrap, bool wrap_on_spaces, bool add_dots)
     {
         var songs = new List<MySong>();
         var songLines = new List<MyLine>();
@@ -52,10 +49,11 @@ public static partial class LoaderText
                 }
 
                 sectionName = text[1..].Trim();
+                songName = "";
             }
             else
             {
-                var wrapped = TextWrapper.Wrap(text, word_wrap, wrap_on_spaces);
+                var wrapped = TextWrapper.Wrap(text, word_wrap, wrap_on_spaces, add_dots);
 
                 foreach (var wrap in wrapped)
                 {

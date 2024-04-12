@@ -53,7 +53,10 @@ Soon after the lines deck have moved to the next page, I reveal two new cards on
 
 - `Chunk size` - number of lines per page
 - `Word Wrap` - number of characters after which to try to split the line
+- `On spaces` - wrap text on spaces or on punctuation
+- `Add dots` - add dots before and after text on wrap
 - `Colors` - number of colors to alternate
+- `Overlap` - add first line to the end of previous chapter and vice versa
 
 ## Importing created deck into Anki
 

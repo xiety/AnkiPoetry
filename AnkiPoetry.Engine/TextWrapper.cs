@@ -2,16 +2,18 @@
 
 public static class TextWrapper
 {
-    public static string[] Wrap(string text, int word_wrap, bool wrap_on_spaces)
+    public static string[] Wrap(string text, int word_wrap, bool wrap_on_spaces, bool add_dots)
     {
         if (word_wrap == -1 || text.Length <= word_wrap)
             return [text];
 
         var lines = wrap_on_spaces
-            ? WrapOnSpaces(text, word_wrap)
-            : WrapOnPunctuation(text, word_wrap);
+            ? WrapOnSpaces(text, word_wrap).ToArray()
+            : WrapOnPunctuation(text, word_wrap).ToArray();
 
-        return [.. AddDots([.. lines])];
+        return add_dots
+            ? AddDots(lines).ToArray()
+            : lines;
     }
 
     private static IEnumerable<string> WrapOnPunctuation(string text, int word_wrap)
