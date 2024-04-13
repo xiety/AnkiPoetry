@@ -4,7 +4,8 @@ public class LineCreator : BaseCreatorPerLine<Card>
 {
     protected override IEnumerable<Card> CreateCard(string number, string beginning, MyLine to, int colors)
     {
-        var cloze = GetLineText(MakeCloze(to.Text), to, colors);
+        var text = MakeCloze(AddPrefixPostfix(to.Text, to));
+        var cloze = AddLineNumber(to.LineNumber, text, colors);
         yield return new(number, beginning + cloze);
     }
 

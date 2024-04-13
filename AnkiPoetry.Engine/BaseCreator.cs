@@ -5,13 +5,13 @@ public abstract class BaseCreator<T>
     private static string ColorLine(string text, int n, int colors)
         => $"<div class=\"line{n % colors}\">" + text + "</div>";
 
-    private static string AddLineNumber(int lineNumber, string text, int colors)
-        => ColorLine($"{lineNumber,3}. {text}", lineNumber, colors);
-
     protected static string GetLineText(string text, MyLine line, int colors)
         => AddLineNumber(line.LineNumber, AddPrefixPostfix(text, line), colors);
 
-    private static string AddPrefixPostfix(string text, MyLine line)
+    protected static string AddLineNumber(int lineNumber, string text, int colors)
+        => ColorLine($"{lineNumber,3}. {text}", lineNumber, colors);
+
+    protected static string AddPrefixPostfix(string text, MyLine line)
         => line.LineType switch
         {
             LineType.Norm => text,
