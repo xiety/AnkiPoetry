@@ -73,7 +73,11 @@ public static class Chunker
     }
 
     private static string CreateHeader(MySection section, MySong song, int screenNumber)
-        => $"{section.SectionName}, {song.SongName} ({screenNumber})";
+    {
+        string[] elements = [section.SectionName, song.SongName];
+        var title = String.Join(", ", elements.Where(a => !String.IsNullOrEmpty(a)));
+        return $"{title} ({screenNumber})";
+    }
 }
 
 public record Chunk(int MaxSongNumber, string Header, int SectionNumber, int SongNumber, MyLine[] Lines);
