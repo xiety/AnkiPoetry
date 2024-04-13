@@ -57,6 +57,7 @@ Soon after the lines deck have moved to the next page, I reveal two new cards on
 - `Add dots` - add dots before and after text on wrap
 - `Colors` - number of colors to alternate
 - `Overlap` - add first line to the end of previous chapter and vice versa
+- `Empty End` - add an empty End element
 
 ## Importing created deck into Anki
 

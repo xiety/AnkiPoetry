@@ -2,11 +2,11 @@
 
 public static class Chunker
 {
-    public static IEnumerable<Chunk> Run(MyDocument doc, int chunk_size, bool overlap_chapters)
+    public static IEnumerable<Chunk> Run(MyDocument doc, int chunk_size, bool overlap_chapters, bool empty_end_element)
     {
         foreach (var section in doc.Sections)
         {
-            foreach (var song in Augmented(section.Songs, overlap_chapters))
+            foreach (var song in Augmented(section.Songs, overlap_chapters, empty_end_element))
             {
                 var screen_number = 1;
 
@@ -20,7 +20,7 @@ public static class Chunker
         }
     }
 
-    private static IEnumerable<MySong> Augmented(MySong[] songs, bool overlap_chapters)
+    private static IEnumerable<MySong> Augmented(MySong[] songs, bool overlap_chapters, bool empty_end_element)
     {
         for (var i = 0; i < songs.Length; ++i)
         {
@@ -28,23 +28,26 @@ public static class Chunker
 
             if (overlap_chapters)
             {
-                var textBegin = (i != 0) ? songs[i - 1].Lines.Last().Text : "";
-                lines.Add(new(0, textBegin, LineType.Prev));
+                var text_begin = (i != 0) ? songs[i - 1].Lines.Last().Text : "";
+                lines.Add(new(0, text_begin, LineType.Prev));
             }
             else
             {
-                var textBegin = songs[i].SongName;
-                lines.Add(new(0, textBegin, LineType.Norm));
+                lines.Add(new(0, "", LineType.Prev));
             }
 
             lines.AddRange(songs[i].Lines);
 
             var new_num = songs[i].Lines.Max(a => a.LineNumber) + 1;
 
-            if (overlap_chapters)
+            if (overlap_chapters && i != songs.Length - 1)
             {
-                var textEnd = (i != songs.Length - 1) ? songs[i + 1].Lines.First().Text : "";
-                lines.Add(new(new_num, textEnd, LineType.Next));
+                var text_end = songs[i + 1].Lines.First().Text;
+                lines.Add(new(new_num, text_end, LineType.Next));
+            }
+            else if (empty_end_element)
+            {
+                lines.Add(new(new_num, "", LineType.Next));
             }
 
             yield return songs[i] with { Lines = [.. lines] };
@@ -68,7 +71,7 @@ public static class Chunker
             }
         }
 
-        if (result.Count > 0)
+        if (result.Count > 1)
             yield return result.ToArray();
     }
 

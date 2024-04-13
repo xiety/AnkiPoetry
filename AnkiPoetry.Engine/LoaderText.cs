@@ -2,6 +2,12 @@
 
 public static partial class LoaderText
 {
+    public static MyDocument LoadText(string text, int word_wrap, bool wrap_on_spaces, bool add_dots)
+    {
+        var lines = text.Replace("\r\n", "\n").Split("\n");
+        return LoadLines(lines, word_wrap, wrap_on_spaces, add_dots);
+    }
+
     public static MyDocument LoadLines(string[] lines, int word_wrap, bool wrap_on_spaces, bool add_dots)
     {
         var songs = new List<MySong>();

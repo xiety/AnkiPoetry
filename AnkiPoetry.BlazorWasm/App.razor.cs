@@ -75,14 +75,14 @@ public sealed partial class App : IAsyncDisposable
     {
         LocalStorage.SetItem(ParametersKey, parameters);
 
-        var doc = LoaderText.LoadLines(
-            parameters.Text.Replace("\r\n", "\n").Split("\n"),
+        var doc = LoaderText.LoadText(
+            parameters.Text,
             parameters.WordWrap,
             parameters.WrapOnSpaces,
             parameters.AddDots
         );
 
-        var chunks = Chunker.Run(doc, parameters.ChunkSize, parameters.OverlapChapters).ToArray();
+        var chunks = Chunker.Run(doc, parameters.ChunkSize, parameters.OverlapChapters, parameters.EmptyEndElement).ToArray();
 
         samples = creator_sample.Run(chunks, parameters.Colors);
 
@@ -120,6 +120,7 @@ public sealed partial class App : IAsyncDisposable
         public bool AddDots { get; set; }
         public int Colors { get; set; }
         public bool OverlapChapters { get; set; } = true;
+        public bool EmptyEndElement { get; set; } = true;
 
         public string Text { get; set; } = "";
     }
