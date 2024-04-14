@@ -82,7 +82,7 @@ public sealed partial class App : IAsyncDisposable
             parameters.AddDots
         );
 
-        var chunks = Chunker.Run(doc, parameters.ChunkSize, parameters.OverlapChapters, parameters.EmptyEndElement).ToArray();
+        var chunks = Chunker.Run(doc, parameters.ChunkSize, parameters.OverlapChapters, parameters.EmptyEndElement);
 
         samples = creator_sample.Run(chunks, parameters.Colors);
 

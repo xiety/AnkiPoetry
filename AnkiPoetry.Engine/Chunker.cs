@@ -2,7 +2,10 @@
 
 public static class Chunker
 {
-    public static IEnumerable<Chunk> Run(MyDocument doc, int chunk_size, bool overlap_chapters, bool empty_end_element)
+    public static Chunk[] Run(MyDocument doc, int chunk_size, bool overlap_chapters, bool empty_end_element)
+        => RunEnumerable(doc, chunk_size, overlap_chapters, empty_end_element).ToArray();
+
+    public static IEnumerable<Chunk> RunEnumerable(MyDocument doc, int chunk_size, bool overlap_chapters, bool empty_end_element)
     {
         foreach (var section in doc.Sections)
         {

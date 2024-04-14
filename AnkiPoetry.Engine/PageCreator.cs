@@ -20,9 +20,9 @@ public partial class PageCreator : BaseCreator<Card>
         {
             var cloze_num = even ? 1 : 2;
 
-            var text = line.Text != ""
-                ? GetLineText($"{{{{c{cloze_num}::{line.Text}}}}}", line, colors)
-                : GetLineText("", line, colors);
+            var line_text = AddPrefixPostfix(line.Text, line.LineType);
+
+            var text = AddLineNumber(line.LineNumber, MakeCloze(cloze_num, line_text), colors);
 
             sb.Append(text);
 
@@ -31,4 +31,7 @@ public partial class PageCreator : BaseCreator<Card>
 
         yield return new(number, sb.ToString());
     }
+
+    private static string MakeCloze(int cloze_num, string text)
+        => $"{{{{c{cloze_num}::{text}}}}}";
 }
