@@ -1,4 +1,6 @@
-﻿using AnkiPoetry.Engine;
+﻿using System.Text.Json;
+
+using AnkiPoetry.Engine;
 
 using Blazored.LocalStorage;
 
@@ -15,7 +17,7 @@ public sealed partial class App : IAsyncDisposable
     [Inject]
     public required ISyncLocalStorageService LocalStorage { get; set; }
 
-    const string ParametersKey = "AnkiPoetry:Parameters";
+    const string StateKey = "AnkiPoetry:State";
 
     private readonly CreatorInfo[] infos =
     [
@@ -28,39 +30,39 @@ public sealed partial class App : IAsyncDisposable
 
     //mutable
     private IJSObjectReference? module;
-    private Parameters parameters = new();
+    private State state = new();
     private Card[] samples = [];
 
     protected override void OnInitialized()
     {
-        Parameters? saved;
+        State? savedState;
 
         try
         {
-            saved = LocalStorage.GetItem<Parameters>(ParametersKey);
+            savedState = LocalStorage.GetItem<State>(StateKey);
         }
         catch
         {
-            saved = null;
+            savedState = null;
         }
 
-        if (saved is null)
+        if (savedState is null)
         {
             LoadHamlet();
         }
         else
         {
-            parameters = saved;
+            state = savedState;
             Generate();
         }
     }
 
     private void LoadHamlet()
     {
-        parameters.Text = Samples.HamletText;
-        parameters.ChunkSize = 20;
-        parameters.WordWrap = -1;
-        parameters.Colors = 6;
+        state.Text = Samples.HamletText;
+        state.Parameters.ChunkSize = 20;
+        state.Parameters.WordWrap = -1;
+        state.Parameters.Colors = 6;
 
         Generate();
     }
@@ -73,22 +75,22 @@ public sealed partial class App : IAsyncDisposable
 
     private void Generate()
     {
-        LocalStorage.SetItem(ParametersKey, parameters);
+        LocalStorage.SetItem(StateKey, state);
 
         var doc = LoaderText.LoadText(
-            parameters.Text,
-            parameters.WordWrap,
-            parameters.WrapOnSpaces,
-            parameters.AddDots
+            state.Text,
+            state.Parameters.WordWrap,
+            state.Parameters.WrapOnSpaces,
+            state.Parameters.AddDots
         );
 
-        var chunks = Chunker.Run(doc, parameters.ChunkSize, parameters.OverlapChapters, parameters.EmptyEndElement);
+        var chunks = Chunker.Run(doc, state.Parameters.ChunkSize, state.Parameters.OverlapChapters, state.Parameters.EmptyEndElement);
 
-        samples = creator_sample.Run(chunks, parameters.Colors);
+        samples = creator_sample.Run(chunks, state.Parameters.Colors);
 
         foreach (var info in infos)
         {
-            var cards = info.Creator.Run(chunks, parameters.Colors);
+            var cards = info.Creator.Run(chunks, state.Parameters.Colors);
             info.Csv = CsvSaver.CreateCsv(cards, [info.NoteType]);
         }
     }
@@ -97,6 +99,19 @@ public sealed partial class App : IAsyncDisposable
     {
         if (module is not null)
             await module.InvokeVoidAsync("downloadContent", element_id, file_name);
+    }
+
+    private string GetJson() => JsonSerializer.Serialize(state.Parameters);
+
+    private void SetJson(string? newValue)
+    {
+        try
+        {
+            state.Parameters = JsonSerializer.Deserialize<Parameters>(newValue!)!;
+        }
+        catch
+        {
+        }
     }
 
     public async ValueTask DisposeAsync()
@@ -112,16 +127,20 @@ public sealed partial class App : IAsyncDisposable
         public string NoteType => $"#notetype:poetry::{Id}";
     }
 
+    record State
+    {
+        public string Text { get; set; } = "";
+        public Parameters Parameters { get; set; } = new();
+    }
+
     record Parameters
     {
-        public int ChunkSize { get; set; }
-        public int WordWrap { get; set; }
-        public bool WrapOnSpaces { get; set; }
-        public bool AddDots { get; set; }
-        public int Colors { get; set; }
+        public int ChunkSize { get; set; } = 20;
+        public int WordWrap { get; set; } = -1;
+        public bool WrapOnSpaces { get; set; } = true;
+        public bool AddDots { get; set; } = false;
+        public int Colors { get; set; } = 6;
         public bool OverlapChapters { get; set; } = true;
         public bool EmptyEndElement { get; set; } = true;
-
-        public string Text { get; set; } = "";
     }
 }

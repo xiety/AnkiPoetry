@@ -4,17 +4,20 @@
     <button @onclick="LoadHamlet">Load Hamlet</button>
 </div>
 <div class="parameters">
-    <div><div class="parameter-name">Chunk size: </div><input type="number" min="1" @bind="parameters.ChunkSize" /></div>
-    <div><div class="parameter-name">Word Wrap: </div><input type="number" min="-1" @bind="parameters.WordWrap" /></div>
-    <div><div class="parameter-name">On spaces: </div><input type="checkbox" @bind="parameters.WrapOnSpaces" /></div>
-    <div><div class="parameter-name">Add dots: </div><input type="checkbox" @bind="parameters.AddDots" /></div>
-    <div><div class="parameter-name">Colors: </div><input type="number" min="1" @bind="parameters.Colors" /></div>
-    <div><div class="parameter-name">Overlap: </div><input type="checkbox" @bind="parameters.OverlapChapters" /></div>
-    <div><div class="parameter-name">Empty End: </div><input type="checkbox" @bind="parameters.EmptyEndElement" /></div>
+    <div><div class="parameter-name">Chunk size: </div><input type="number" min="1" @bind="state.Parameters.ChunkSize" /></div>
+    <div><div class="parameter-name">Word Wrap: </div><input type="number" min="-1" @bind="state.Parameters.WordWrap" /></div>
+    <div><div class="parameter-name">On spaces: </div><input type="checkbox" @bind="state.Parameters.WrapOnSpaces" /></div>
+    <div><div class="parameter-name">Add dots: </div><input type="checkbox" @bind="state.Parameters.AddDots" /></div>
+    <div><div class="parameter-name">Colors: </div><input type="number" min="1" @bind="state.Parameters.Colors" /></div>
+    <div><div class="parameter-name">Overlap: </div><input type="checkbox" @bind="state.Parameters.OverlapChapters" /></div>
+    <div><div class="parameter-name">Empty End: </div><input type="checkbox" @bind="state.Parameters.EmptyEndElement" /></div>
+</div>
+<div class="json">
+    <input @bind:event="onchange" @bind:get="GetJson()" @bind:set="SetJson" />
 </div>
 <div class="item">
     <div class="item-name">Input:</div>
-    <textarea @bind="parameters.Text" wrap="off" />
+    <textarea @bind="state.Text" wrap="off" />
     <div class="item-buttons">
         <button @onclick="Generate" class="main-button">Generate</button>
     </div>
