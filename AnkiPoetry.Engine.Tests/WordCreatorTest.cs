@@ -18,9 +18,9 @@ public class WordCreatorTest
             """;
 
         var doc = LoaderText.LoadText(text, -1, false, false);
-        var chunks = Chunker.Run(doc, 5, true, true);
+        var chunks = Chunker.Run(doc, 5, true, true, false);
 
-        var cards = wordCreator.Run(chunks, 6);
+        var cards = wordCreator.Run(chunks, 6, true);
 
         Assert.AreEqual(5, cards.Length);
 

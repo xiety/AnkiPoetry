@@ -5,12 +5,12 @@ namespace AnkiPoetry.Engine;
 
 public partial class WordCreator : BaseCreatorPerLine<Card>
 {
-    protected override IEnumerable<Card> CreateCard(string number, string beginning, MyLine to, int colors)
+    protected override IEnumerable<Card> CreateCard(string number, string beginning, MyLine to, int colors, bool line_numbers)
     {
         if (to.LineType != LineType.Norm)
             yield break;
 
-        var cloze = GetLineText(MakeCloze(to.Text), to, colors);
+        var cloze = GetLineText(MakeCloze(to.Text), to, colors, line_numbers);
         var text = beginning + cloze;
 
         yield return new(number, text);

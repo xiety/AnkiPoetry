@@ -12,6 +12,8 @@
     <div><div class="parameter-name">Overlap: </div><input type="checkbox" @bind="state.Parameters.OverlapChapters" /></div>
     <div><div class="parameter-name">Empty End: </div><input type="checkbox" @bind="state.Parameters.EmptyEndElement" /></div>
     <div><div class="parameter-name">Title to Begin: </div><input type="checkbox" @bind="state.Parameters.TitleToBegin" /></div>
+<div><div class="parameter-name">Line numbers: </div><input type="checkbox" @bind="state.Parameters.LineNumbers" /></div>
+
 </div>
 <div class="json">
     <input @bind:event="onchange" @bind:get="GetJson()" @bind:set="SetJson" />

@@ -15,7 +15,7 @@ public class ChunkerTest
 
         var doc = LoaderText.LoadText(text, -1, false, false);
 
-        var chunks = Chunker.Run(doc, 5, true, false);
+        var chunks = Chunker.Run(doc, 5, true, false, true);
 
         Assert.AreEqual(1, chunks.Length);
     }
@@ -31,7 +31,7 @@ public class ChunkerTest
 
         var doc = LoaderText.LoadText(text, -1, false, false);
 
-        var chunks = Chunker.Run(doc, 5, true, empty_end_element: true);
+        var chunks = Chunker.Run(doc, 5, true, empty_end_element: true, true);
 
         Assert.AreEqual(1, chunks.Length);
     }

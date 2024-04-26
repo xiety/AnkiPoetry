@@ -91,11 +91,11 @@ public sealed partial class App : IAsyncDisposable
             state.Parameters.TitleToBegin
         );
 
-        samples = creator_sample.Run(chunks, state.Parameters.Colors);
+        samples = creator_sample.Run(chunks, state.Parameters.Colors, state.Parameters.LineNumbers);
 
         foreach (var info in infos)
         {
-            var cards = info.Creator.Run(chunks, state.Parameters.Colors);
+            var cards = info.Creator.Run(chunks, state.Parameters.Colors, state.Parameters.LineNumbers);
             info.Csv = CsvSaver.CreateCsv(cards, [info.NoteType]);
         }
     }
@@ -148,5 +148,6 @@ public sealed partial class App : IAsyncDisposable
         public bool OverlapChapters { get; set; } = true;
         public bool EmptyEndElement { get; set; } = true;
         public bool TitleToBegin { get; set; } = true;
+        public bool LineNumbers { get; set; } = true;
     }
 }

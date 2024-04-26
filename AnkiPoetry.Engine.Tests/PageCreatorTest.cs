@@ -18,9 +18,9 @@ public class PageCreatorTest
             """;
 
         var doc = LoaderText.LoadText(text, -1, false, false);
-        var chunks = Chunker.Run(doc, 5, true, true);
+        var chunks = Chunker.Run(doc, 5, true, true, false);
 
-        var cards = pageCreator.Run(chunks, 6);
+        var cards = pageCreator.Run(chunks, 6, true);
 
         Assert.AreEqual(2, cards.Length);
 
@@ -45,9 +45,9 @@ public class PageCreatorTest
             """;
 
         var doc = LoaderText.LoadText(text, -1, false, false);
-        var chunks = Chunker.Run(doc, 5, true, true);
+        var chunks = Chunker.Run(doc, 5, true, true, false);
 
-        var cards = pageCreator.Run(chunks, 6);
+        var cards = pageCreator.Run(chunks, 6, true);
 
         Assert.AreEqual(2, cards.Length);
 

@@ -59,7 +59,7 @@ public static partial class LoaderText
             }
             else
             {
-                var wrapped = TextWrapper.Wrap(text, word_wrap, wrap_on_spaces, add_dots);
+                var wrapped = TextWrapper.Wrap(text.Trim(), word_wrap, wrap_on_spaces, add_dots);
 
                 foreach (var wrap in wrapped)
                 {

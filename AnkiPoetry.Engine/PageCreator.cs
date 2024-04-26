@@ -4,7 +4,7 @@ namespace AnkiPoetry.Engine;
 
 public partial class PageCreator : BaseCreator<Card>
 {
-    protected override IEnumerable<Card> CardFromChunk(Chunk chunk, int colors)
+    protected override IEnumerable<Card> CardFromChunk(Chunk chunk, int colors, bool line_numbers)
     {
         var from = chunk.Lines.First();
         var number = CreateNumber(chunk.MaxSongNumber, chunk.SectionNumber, chunk.SongNumber, from.LineNumber);
@@ -22,7 +22,7 @@ public partial class PageCreator : BaseCreator<Card>
 
             var line_text = AddPrefixPostfix(line.Text, line.LineType);
 
-            var text = AddLineNumber(line.LineNumber, MakeCloze(cloze_num, line_text), colors);
+            var text = AddLineNumber(line.LineNumber, MakeCloze(cloze_num, line_text), colors, line_numbers);
 
             sb.Append(text);
 

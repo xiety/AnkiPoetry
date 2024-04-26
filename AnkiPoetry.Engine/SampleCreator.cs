@@ -4,7 +4,7 @@ namespace AnkiPoetry.Engine;
 
 public partial class SampleCreator : BaseCreator<Card>
 {
-    protected override IEnumerable<Card> CardFromChunk(Chunk chunk, int colors)
+    protected override IEnumerable<Card> CardFromChunk(Chunk chunk, int colors, bool line_numbers)
     {
         var from = chunk.Lines.First();
         var number = CreateNumber(chunk.MaxSongNumber, chunk.SectionNumber, chunk.SongNumber, from.LineNumber);
@@ -16,7 +16,7 @@ public partial class SampleCreator : BaseCreator<Card>
 
         foreach (var line in chunk.Lines)
         {
-            var text = GetLineText(line.Text, line, colors);
+            var text = GetLineText(line.Text, line, colors, line_numbers);
             sb.Append(text);
         }
 

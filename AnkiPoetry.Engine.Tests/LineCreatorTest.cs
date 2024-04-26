@@ -18,9 +18,9 @@ public class LineCreatorTest
             """;
 
         var doc = LoaderText.LoadText(text, -1, false, false);
-        var chunks = Chunker.Run(doc, 5, true, true);
+        var chunks = Chunker.Run(doc, 5, true, true, false);
 
-        var cards = lineCreator.Run(chunks, 6);
+        var cards = lineCreator.Run(chunks, 6, true);
 
         Assert.AreEqual(6, cards.Length);
 
@@ -49,9 +49,9 @@ public class LineCreatorTest
             """;
 
         var doc = LoaderText.LoadText(text, -1, false, false);
-        var chunks = Chunker.Run(doc, 5, true, true);
+        var chunks = Chunker.Run(doc, 5, true, true, false);
 
-        var cards = lineCreator.Run(chunks, 6);
+        var cards = lineCreator.Run(chunks, 6, true);
 
         Assert.AreEqual(8, cards.Length);
 
