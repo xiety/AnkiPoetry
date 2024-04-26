@@ -84,7 +84,12 @@ public sealed partial class App : IAsyncDisposable
             state.Parameters.AddDots
         );
 
-        var chunks = Chunker.Run(doc, state.Parameters.ChunkSize, state.Parameters.OverlapChapters, state.Parameters.EmptyEndElement);
+        var chunks = Chunker.Run(doc,
+            state.Parameters.ChunkSize,
+            state.Parameters.OverlapChapters,
+            state.Parameters.EmptyEndElement,
+            state.Parameters.TitleToBegin
+        );
 
         samples = creator_sample.Run(chunks, state.Parameters.Colors);
 
@@ -142,5 +147,6 @@ public sealed partial class App : IAsyncDisposable
         public int Colors { get; set; } = 6;
         public bool OverlapChapters { get; set; } = true;
         public bool EmptyEndElement { get; set; } = true;
+        public bool TitleToBegin { get; set; } = true;
     }
 }
