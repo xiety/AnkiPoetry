@@ -18,6 +18,9 @@ public partial class SampleCreator : BaseCreator<Card>
         {
             var text = GetLineText(line.Text, line, colors, line_numbers);
             sb.Append(text);
+
+            if (line.IsLast)
+                sb.Append("<hr>");
         }
 
         yield return new(number, sb.ToString());

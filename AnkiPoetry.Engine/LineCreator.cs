@@ -2,11 +2,11 @@
 
 public class LineCreator : BaseCreatorPerLine<Card>
 {
-    protected override IEnumerable<Card> CreateCard(string number, string beginning, MyLine to, int colors, bool line_numbers)
+    protected override Card CreateCard(string number, string beginning, string ending, MyLine to, int colors, bool line_numbers)
     {
         var text = MakeCloze(AddPrefixPostfix(to.Text, to.LineType));
         var cloze = AddLineNumber(to.LineNumber, text, colors, line_numbers);
-        yield return new(number, beginning + cloze);
+        return new(number, beginning + cloze + ending);
     }
 
     private static string MakeCloze(string text)

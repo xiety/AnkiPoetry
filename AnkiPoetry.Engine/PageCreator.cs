@@ -29,6 +29,8 @@ public partial class PageCreator : BaseCreator<Card>
             even = !even;
         }
 
+        sb.Append("<hr>");
+
         yield return new(number, sb.ToString());
     }
 

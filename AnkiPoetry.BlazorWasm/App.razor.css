@@ -66,6 +66,12 @@
     font-size: 14px;
 }
 
+::deep.card hr {
+    height: 0px;
+    border: none;
+    border-top: 1px solid white;
+}
+
 ::deep.card .line0 {
     color: #af2acd;
 }
