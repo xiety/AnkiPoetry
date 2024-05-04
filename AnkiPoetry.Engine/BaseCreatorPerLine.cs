@@ -17,6 +17,9 @@ public abstract class BaseCreatorPerLine<T> : BaseCreator<T>
         {
             var text = GetLineText(line.Text, line, colors, line_numbers);
             sb.Append(text);
+
+            if (line.IsLast)
+                sb.Append("<hr>");
         }
 
         return sb.ToString();
