@@ -2,16 +2,16 @@
 
 public static class TextWrapper
 {
-    public static string[] Wrap(string text, int word_wrap, bool wrap_on_spaces, bool add_dots)
+    public static string[] Wrap(string text, Parameters parameters)
     {
-        if (word_wrap == -1 || text.Length <= word_wrap)
+        if (parameters.WordWrap == -1 || text.Length <= parameters.WordWrap)
             return [text];
 
-        var lines = wrap_on_spaces
-            ? WrapOnSpaces(text, word_wrap).ToArray()
-            : WrapOnPunctuation(text, word_wrap).ToArray();
+        var lines = parameters.WrapOnSpaces
+            ? WrapOnSpaces(text, parameters.WordWrap).ToArray()
+            : WrapOnPunctuation(text, parameters.WordWrap).ToArray();
 
-        return add_dots
+        return parameters.AddDots
             ? AddDots(lines).ToArray()
             : lines;
     }

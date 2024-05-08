@@ -2,13 +2,13 @@
 
 public static partial class LoaderText
 {
-    public static MyDocument LoadText(string text, int word_wrap, bool wrap_on_spaces, bool add_dots)
+    public static MyDocument LoadText(string text, Parameters parameters)
     {
         var lines = text.Replace("\r\n", "\n").Split("\n");
-        return LoadLines(lines, word_wrap, wrap_on_spaces, add_dots);
+        return LoadLines(lines, parameters);
     }
 
-    public static MyDocument LoadLines(string[] lines, int word_wrap, bool wrap_on_spaces, bool add_dots)
+    public static MyDocument LoadLines(string[] lines, Parameters parameters)
     {
         var songs = new List<MySong>();
         var songLines = new List<MyLine>();
@@ -18,6 +18,7 @@ public static partial class LoaderText
         var sectionNumber = 1;
         var songNumber = 1;
         var lineNumber = 1;
+        var continousNumber = 1;
 
         foreach (var text in lines)
         {
@@ -30,19 +31,23 @@ public static partial class LoaderText
                 {
                     songs.Add(new MySong(songNumber, songName, [.. songLines]));
                     songLines.Clear();
+
                     lineNumber = 1;
+
                     songNumber++;
                 }
 
                 songName = text[2..].Trim();
             }
-            else if (text.StartsWith("#"))
+            else if (text.StartsWith('#'))
             {
                 if (songLines.Count > 0)
                 {
                     songs.Add(new(songNumber, songName, [.. songLines]));
                     songLines.Clear();
+
                     lineNumber = 1;
+
                     songNumber++;
                 }
 
@@ -59,12 +64,13 @@ public static partial class LoaderText
             }
             else
             {
-                var wrapped = TextWrapper.Wrap(text.Trim(), word_wrap, wrap_on_spaces, add_dots);
+                var wrapped = TextWrapper.Wrap(text.Trim(), parameters);
 
                 foreach (var wrap in wrapped)
                 {
-                    songLines.Add(new(lineNumber, wrap, LineType.Norm, false));
+                    songLines.Add(new(lineNumber, continousNumber, wrap, LineType.Norm, false));
                     lineNumber++;
+                    continousNumber++;
                 }
             }
         }

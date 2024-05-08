@@ -2,10 +2,10 @@
 
 public class LineCreator : BaseCreatorPerLine<Card>
 {
-    protected override Card CreateCard(string number, string beginning, string ending, MyLine to, int colors, bool line_numbers)
+    protected override Card CreateCard(string number, string beginning, string ending, MyLine to, Parameters parameters)
     {
         var text = MakeCloze(AddPrefixPostfix(to.Text, to.LineType));
-        var cloze = AddLineNumber(to.LineNumber, text, colors, line_numbers);
+        var cloze = AddLineNumber(to, text, parameters);
         return new(number, beginning + cloze + ending);
     }
 

@@ -4,18 +4,18 @@ namespace AnkiPoetry.Engine;
 
 public abstract class BaseCreatorPerLine<T> : BaseCreator<T>
 {
-    protected abstract T CreateCard(string number, string beginning, string ending, MyLine to, int colors, bool line_numbers);
+    protected abstract T CreateCard(string number, string beginning, string ending, MyLine to, Parameters parameters);
 
     protected virtual MyLine[] FilterLines(MyLine[] lines)
         => lines;
 
-    protected static string JoinLines(MyLine[] list, int colors, bool line_numbers)
+    protected string JoinLines(MyLine[] list, Parameters parameters)
     {
         var sb = new StringBuilder();
 
         foreach (var line in list)
         {
-            var text = GetLineText(line.Text, line, colors, line_numbers);
+            var text = GetLineText(line.Text, line, parameters);
             sb.Append(text);
 
             if (line.IsLast)
@@ -25,7 +25,7 @@ public abstract class BaseCreatorPerLine<T> : BaseCreator<T>
         return sb.ToString();
     }
 
-    protected override IEnumerable<T> CardFromChunk(Chunk chunk, int colors, bool line_numbers)
+    protected override IEnumerable<T> CardFromChunk(Chunk chunk, Parameters parameters)
     {
         var filtered = FilterLines(chunk.Lines);
 
@@ -34,10 +34,10 @@ public abstract class BaseCreatorPerLine<T> : BaseCreator<T>
             var to = filtered[i + 1];
             var number = CreateNumber(chunk.MaxSongNumber, chunk.SectionNumber, chunk.SongNumber, to.LineNumber);
 
-            var beginning = CreateHeader(chunk.Header) + JoinLines(filtered[..(i + 1)], colors, line_numbers);
+            var beginning = CreateHeader(chunk.Header) + JoinLines(filtered[..(i + 1)], parameters);
             var ending = to.IsLast ? "<hr>" : "";
 
-            var card = CreateCard(number, beginning, ending, to, colors, line_numbers);
+            var card = CreateCard(number, beginning, ending, to, parameters);
 
             yield return card;
         }

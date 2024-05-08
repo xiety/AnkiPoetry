@@ -2,18 +2,18 @@
 
 public static class Chunker
 {
-    public static Chunk[] Run(MyDocument doc, int chunk_size, bool overlap_chapters, bool empty_end_element, bool title_to_begin)
-        => RunEnumerable(doc, chunk_size, overlap_chapters, empty_end_element, title_to_begin).ToArray();
+    public static Chunk[] Run(MyDocument doc, Parameters parameters)
+        => RunEnumerable(doc, parameters).ToArray();
 
-    public static IEnumerable<Chunk> RunEnumerable(MyDocument doc, int chunk_size, bool overlap_chapters, bool empty_end_element, bool title_to_begin)
+    public static IEnumerable<Chunk> RunEnumerable(MyDocument doc, Parameters parameters)
     {
         foreach (var section in doc.Sections)
         {
-            foreach (var song in Augmented(section, overlap_chapters, empty_end_element, title_to_begin))
+            foreach (var song in Augmented(section, parameters))
             {
                 var screen_number = 1;
 
-                foreach (var chunk in ChunksWithOverlap(song.Lines, chunk_size))
+                foreach (var chunk in ChunksWithOverlap(song.Lines, parameters.ChunkSize))
                 {
                     var header = CreateHeader(section, song, screen_number);
                     yield return new(doc.MaxSongNumber, header, section.SectionNumber, song.SongNumber, chunk);
@@ -23,15 +23,16 @@ public static class Chunker
         }
     }
 
-    private static IEnumerable<MySong> Augmented(MySection section, bool overlap_chapters, bool empty_end_element, bool title_to_begin)
+    private static IEnumerable<MySong> Augmented(MySection section, Parameters parameters)
     {
         for (var i = 0; i < section.Songs.Length; ++i)
         {
             var lines = new List<MyLine>();
 
             var title = !String.IsNullOrEmpty(section.Songs[i].SongName) ? section.Songs[i].SongName : section.SectionName;
-            var text_begin = (i != 0 && overlap_chapters) ? section.Songs[i - 1].Lines.Last().Text : (title_to_begin ? title : "");
-            lines.Add(new(0, text_begin, LineType.Prev, false));
+            var text_begin = (i != 0 && parameters.OverlapChapters) ? section.Songs[i - 1].Lines.Last().Text : (parameters.TitleToBegin ? title : "");
+            var continous_num_begin = (i != 0 && parameters.OverlapChapters) ? (parameters.Continous ? section.Songs[i - 1].Lines.Last().ContinousNumber : section.Songs[i - 1].Lines.Last().LineNumber) : 0;
+            lines.Add(new(0, continous_num_begin, text_begin, LineType.Prev, false));
 
             lines.AddRange(section.Songs[i].Lines[..^1]);
 
@@ -39,15 +40,16 @@ public static class Chunker
             lines.Add(last with { IsLast = true });
 
             var new_num = section.Songs[i].Lines.Max(a => a.LineNumber) + 1;
+            var continous_new_num = section.Songs[i].Lines.Max(a => a.ContinousNumber) + 1;
 
-            if (overlap_chapters && i != section.Songs.Length - 1)
+            if (parameters.OverlapChapters && i != section.Songs.Length - 1)
             {
                 var text_end = section.Songs[i + 1].Lines.First().Text;
-                lines.Add(new(new_num, text_end, LineType.Next, false));
+                lines.Add(new(new_num, continous_new_num, text_end, LineType.Next, false));
             }
-            else if (empty_end_element)
+            else if (parameters.EmptyEndElement)
             {
-                lines.Add(new(new_num, "", LineType.Next, false));
+                lines.Add(new(new_num, continous_new_num, "", LineType.Next, false));
             }
 
             yield return section.Songs[i] with { Lines = [.. lines] };

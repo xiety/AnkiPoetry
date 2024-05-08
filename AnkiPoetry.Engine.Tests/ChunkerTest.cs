@@ -13,9 +13,9 @@ public class ChunkerTest
             4
             """;
 
-        var doc = LoaderText.LoadText(text, -1, false, false);
-
-        var chunks = Chunker.Run(doc, 5, true, false, true);
+        var parameters = new Parameters();
+        var doc = LoaderText.LoadText(text, parameters);
+        var chunks = Chunker.Run(doc, parameters);
 
         Assert.AreEqual(1, chunks.Length);
     }
@@ -29,9 +29,9 @@ public class ChunkerTest
             3
             """;
 
-        var doc = LoaderText.LoadText(text, -1, false, false);
-
-        var chunks = Chunker.Run(doc, 5, true, empty_end_element: true, true);
+        var parameters = new Parameters();
+        var doc = LoaderText.LoadText(text, parameters);
+        var chunks = Chunker.Run(doc, parameters);
 
         Assert.AreEqual(1, chunks.Length);
     }

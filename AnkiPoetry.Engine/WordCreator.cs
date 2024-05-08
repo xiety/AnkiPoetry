@@ -8,9 +8,9 @@ public partial class WordCreator : BaseCreatorPerLine<Card>
     protected override MyLine[] FilterLines(MyLine[] lines)
         => lines.Where(a => a.LineType != LineType.Next).ToArray();
 
-    protected override Card CreateCard(string number, string beginning, string ending, MyLine to, int colors, bool line_numbers)
+    protected override Card CreateCard(string number, string beginning, string ending, MyLine to, Parameters parameters)
     {
-        var cloze = GetLineText(MakeCloze(to.Text), to, colors, line_numbers);
+        var cloze = GetLineText(MakeCloze(to.Text), to, parameters);
         return new(number, beginning + cloze + ending);
     }
 

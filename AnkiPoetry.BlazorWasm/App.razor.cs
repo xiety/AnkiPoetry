@@ -21,9 +21,9 @@ public sealed partial class App : IAsyncDisposable
 
     private readonly CreatorInfo[] infos =
     [
-        new(new WordCreator(), "word", "Word", "1. word.csv"),
-        new(new LineCreator(), "line", "Line", "2. line.csv"),
-        new(new PageCreator(), "page", "Page", "3. page.csv"),
+        new(new WordCreator(), "word", "Word", "1. word"),
+        new(new LineCreator(), "line", "Line", "2. line"),
+        new(new PageCreator(), "page", "Page", "3. page"),
     ];
 
     private readonly SampleCreator creator_sample = new();
@@ -77,26 +77,16 @@ public sealed partial class App : IAsyncDisposable
     {
         LocalStorage.SetItem(StateKey, state);
 
-        var doc = LoaderText.LoadText(
-            state.Text,
-            state.Parameters.WordWrap,
-            state.Parameters.WrapOnSpaces,
-            state.Parameters.AddDots
-        );
+        var doc = LoaderText.LoadText(state.Text, state.Parameters);
 
-        var chunks = Chunker.Run(doc,
-            state.Parameters.ChunkSize,
-            state.Parameters.OverlapChapters,
-            state.Parameters.EmptyEndElement,
-            state.Parameters.TitleToBegin
-        );
+        var chunks = Chunker.Run(doc, state.Parameters);
 
-        samples = creator_sample.Run(chunks, state.Parameters.Colors, state.Parameters.LineNumbers);
+        samples = creator_sample.Run(chunks, state.Parameters);
 
         foreach (var info in infos)
         {
-            var cards = info.Creator.Run(chunks, state.Parameters.Colors, state.Parameters.LineNumbers);
-            info.Csv = CsvSaver.CreateCsv(cards, [info.NoteType]);
+            var cards = info.Creator.Run(chunks, state.Parameters);
+            info.Csv = CsvSaver.CreateCsv(cards, [$"#notetype:poetry::{info.Id}", $"#deck:{state.Parameters.DeckName}::{info.DeckName}"]);
         }
     }
 
@@ -125,29 +115,16 @@ public sealed partial class App : IAsyncDisposable
             await module.DisposeAsync();
     }
 
-    record CreatorInfo(BaseCreator<Card> Creator, string Id, string Title, string FileName)
+    record CreatorInfo(BaseCreator<Card> Creator, string Id, string Title, string DeckName)
     {
         public string Csv { get; set; } = "";
         public string ElementId => $"text_{Id}";
-        public string NoteType => $"#notetype:poetry::{Id}";
+        public string FileName => DeckName + ".csv";
     }
 
     record State
     {
         public string Text { get; set; } = "";
         public Parameters Parameters { get; set; } = new();
-    }
-
-    record Parameters
-    {
-        public int ChunkSize { get; set; } = 20;
-        public int WordWrap { get; set; } = -1;
-        public bool WrapOnSpaces { get; set; } = true;
-        public bool AddDots { get; set; } = false;
-        public int Colors { get; set; } = 6;
-        public bool OverlapChapters { get; set; } = true;
-        public bool EmptyEndElement { get; set; } = true;
-        public bool TitleToBegin { get; set; } = true;
-        public bool LineNumbers { get; set; } = true;
     }
 }
