@@ -32,7 +32,7 @@ public static class Chunker
             var title = !String.IsNullOrEmpty(section.Songs[i].SongName) ? section.Songs[i].SongName : section.SectionName;
             var text_begin = (i != 0 && parameters.OverlapChapters) ? section.Songs[i - 1].Lines.Last().Text : (parameters.TitleToBegin ? title : "");
             var continous_num_begin = (i != 0 && parameters.OverlapChapters) ? (parameters.Continous ? section.Songs[i - 1].Lines.Last().ContinousNumber : section.Songs[i - 1].Lines.Last().LineNumber) : 0;
-            lines.Add(new(0, continous_num_begin, text_begin, LineType.Prev, false));
+            lines.Add(new(0, continous_num_begin, text_begin, LineType.PrevSong, false));
 
             lines.AddRange(section.Songs[i].Lines[..^1]);
 
@@ -45,31 +45,40 @@ public static class Chunker
             if (parameters.OverlapChapters && i != section.Songs.Length - 1)
             {
                 var text_end = section.Songs[i + 1].Lines.First().Text;
-                lines.Add(new(new_num, continous_new_num, text_end, LineType.Next, false));
+                lines.Add(new(new_num, continous_new_num, text_end, LineType.NextSong, false));
             }
             else if (parameters.EmptyEndElement)
             {
-                lines.Add(new(new_num, continous_new_num, "", LineType.Next, false));
+                lines.Add(new(new_num, continous_new_num, "", LineType.NextSong, false));
             }
 
             yield return section.Songs[i] with { Lines = [.. lines] };
         }
     }
 
-    private static IEnumerable<MyLine[]> ChunksWithOverlap(IEnumerable<MyLine> lines, int chunk_size)
+    private static IEnumerable<MyLine[]> ChunksWithOverlap(MyLine[] lines, int chunk_size)
     {
         var result = new List<MyLine>();
 
-        foreach (var line in lines)
+        for (var i = 0; i < lines.Length; ++i)
         {
+            var line = lines[i];
+
             if (result.Count + 1 == chunk_size)
             {
+                //Add last line of a chunk. Only mark it as Last if it is not the first line of the next Song
                 result.Add(line with { IsLast = (line.LineType == LineType.Norm) });
+
+                //Add the first line of the next Chunk
+                if (i < lines.Length - 1)
+                    result.Add(lines[i + 1] with { LineType = LineType.NextPage });
 
                 yield return result.ToArray();
 
                 result.Clear();
-                result.Add(line);
+
+                //add line again for next chunk
+                result.Add(line with { LineType = LineType.PrevPage });
             }
             else
             {

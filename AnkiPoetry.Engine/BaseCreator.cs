@@ -1,4 +1,6 @@
-﻿namespace AnkiPoetry.Engine;
+﻿using System.Text;
+
+namespace AnkiPoetry.Engine;
 
 public abstract class BaseCreator<T>
 {
@@ -14,10 +16,9 @@ public abstract class BaseCreator<T>
     protected static string AddPrefixPostfix(string text, LineType lineType)
         => lineType switch
         {
-            LineType.Norm => text,
-            LineType.Prev => (text == "" ? "" : $"{text} ") + "(Begin)",
-            LineType.Next => "(End)" + (text == "" ? "" : $" {text}"),
-            _ => throw new Exception(),
+            LineType.PrevSong => (text == "" ? "" : $"{text} ") + "(Begin)",
+            LineType.NextSong => "(End)" + (text == "" ? "" : $" {text}"),
+            _ => text,
         };
 
     protected abstract IEnumerable<T> CardFromChunk(Chunk chunk, Parameters parameters);
@@ -28,6 +29,22 @@ public abstract class BaseCreator<T>
             parameters.Colors = 1;
 
         return chunks.SelectMany(a => CardFromChunk(a, parameters)).ToArray();
+    }
+
+    protected string JoinLines(MyLine[] list, Parameters parameters)
+    {
+        var sb = new StringBuilder();
+
+        foreach (var line in list)
+        {
+            var text = GetLineText(line.Text, line, parameters);
+            sb.Append(text);
+
+            if (line.IsLast)
+                sb.Append("<hr>");
+        }
+
+        return sb.ToString();
     }
 
     protected virtual string CreateNumber(int maxSongNumber, int sectionNumber, int songNumber, int lineNumber)

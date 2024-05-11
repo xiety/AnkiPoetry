@@ -86,7 +86,10 @@ public sealed partial class App : IAsyncDisposable
         foreach (var info in infos)
         {
             var cards = info.Creator.Run(chunks, state.Parameters);
-            info.Csv = CsvSaver.CreateCsv(cards, [$"#notetype:poetry::{info.Id}", $"#deck:{state.Parameters.DeckName}::{info.DeckName}"]);
+            info.Csv = CsvSaver.CreateCsv(cards, [
+                "#separator:semicolon",
+                $"#notetype:poetry::{info.Id}",
+                $"#deck:{state.Parameters.DeckName}::{info.DeckName}"]);
         }
     }
 

@@ -6,7 +6,7 @@ public record MySong(int SongNumber, string SongName, MyLine[] Lines);
 public record MyLine(int LineNumber, int ContinousNumber, string Text, LineType LineType, bool IsLast);
 public record Card(string Number, string Text);
 
-public enum LineType { Norm, Prev, Next };
+public enum LineType { Norm, PrevPage, NextPage, PrevSong, NextSong };
 
 public record Parameters
 {
