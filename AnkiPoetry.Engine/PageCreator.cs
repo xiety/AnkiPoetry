@@ -20,9 +20,10 @@ public partial class PageCreator : BaseCreator<Card>
         {
             var cloze_num = even ? 1 : 2;
 
-            var line_text = AddPrefixPostfix(line.Text, line.LineType);
+            var text = AddLineNumber(line, MakeCloze(cloze_num, line.Text), parameters);
 
-            var text = AddLineNumber(line, MakeCloze(cloze_num, line_text), parameters);
+            if (line.IsFirst)
+                sb.Append("<hr>");
 
             sb.Append(text);
 

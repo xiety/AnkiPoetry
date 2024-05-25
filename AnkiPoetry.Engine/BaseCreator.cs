@@ -8,18 +8,10 @@ public abstract class BaseCreator<T>
         => $"<div class=\"line{n % colors}\">" + text + "</div>";
 
     protected string GetLineText(string text, MyLine line, Parameters parameters)
-        => AddLineNumber(line, AddPrefixPostfix(text, line.LineType), parameters);
+        => AddLineNumber(line, text, parameters);
 
     protected string AddLineNumber(MyLine line, string text, Parameters parameters)
         => ColorLine((parameters.LineNumbers ? $"{(parameters.Continous ? line.ContinousNumber : line.LineNumber),3}. " : "") + text, line.LineNumber, parameters.Colors);
-
-    protected static string AddPrefixPostfix(string text, LineType lineType)
-        => lineType switch
-        {
-            LineType.PrevSong => (text == "" ? "" : $"{text} ") + "(Begin)",
-            LineType.NextSong => "(End)" + (text == "" ? "" : $" {text}"),
-            _ => text,
-        };
 
     protected abstract IEnumerable<T> CardFromChunk(Chunk chunk, Parameters parameters);
 
@@ -38,6 +30,10 @@ public abstract class BaseCreator<T>
         foreach (var line in list)
         {
             var text = GetLineText(line.Text, line, parameters);
+
+            if (line.IsFirst)
+                sb.Append("<hr>");
+
             sb.Append(text);
 
             if (line.IsLast)

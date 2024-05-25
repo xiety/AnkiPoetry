@@ -32,9 +32,12 @@ public static class Chunker
             var title = !String.IsNullOrEmpty(section.Songs[i].SongName) ? section.Songs[i].SongName : section.SectionName;
             var text_begin = (i != 0 && parameters.OverlapChapters) ? section.Songs[i - 1].Lines.Last().Text : (parameters.TitleToBegin ? title : "");
             var continous_num_begin = (i != 0 && parameters.OverlapChapters) ? (parameters.Continous ? section.Songs[i - 1].Lines.Last().ContinousNumber : section.Songs[i - 1].Lines.Last().LineNumber) : 0;
-            lines.Add(new(0, continous_num_begin, text_begin, LineType.PrevSong, false));
+            lines.Add(new(0, continous_num_begin, text_begin, LineType.PrevSong, false, false));
 
-            lines.AddRange(section.Songs[i].Lines[..^1]);
+            var first = section.Songs[i].Lines[0];
+            lines.Add(first with { IsFirst = true });
+
+            lines.AddRange(section.Songs[i].Lines[1..^1]);
 
             var last = section.Songs[i].Lines[^1];
             lines.Add(last with { IsLast = true });
@@ -45,11 +48,7 @@ public static class Chunker
             if (parameters.OverlapChapters && i != section.Songs.Length - 1)
             {
                 var text_end = section.Songs[i + 1].Lines.First().Text;
-                lines.Add(new(new_num, continous_new_num, text_end, LineType.NextSong, false));
-            }
-            else if (parameters.EmptyEndElement)
-            {
-                lines.Add(new(new_num, continous_new_num, "", LineType.NextSong, false));
+                lines.Add(new(new_num, continous_new_num, text_end, LineType.NextSong, false, false));
             }
 
             yield return section.Songs[i] with { Lines = [.. lines] };
@@ -82,7 +81,7 @@ public static class Chunker
             }
             else
             {
-                result.Add(line);
+                result.Add(line with { IsFirst = (result.Count == 1) });
             }
         }
 

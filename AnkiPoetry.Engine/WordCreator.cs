@@ -16,6 +16,10 @@ public partial class WordCreator : BaseCreator<Card>
                 var number = CreateNumber(chunk.MaxSongNumber, chunk.SectionNumber, chunk.SongNumber, to.LineNumber);
 
                 var beginning = CreateHeader(chunk.Header) + JoinLines(chunk.Lines[..i], parameters);
+
+                if (to.IsFirst)
+                    beginning += "<hr>";
+
                 var ending = to.IsLast ? "<hr>" : "";
 
                 var nextLine = i < chunk.Lines.Length - 1
@@ -35,11 +39,11 @@ public partial class WordCreator : BaseCreator<Card>
         var cloze = MakeCloze(line.Text, ref cloze_num);
         var formatted = GetLineText(cloze, line, parameters);
 
-        if (lineNext is not null)
+        if (lineNext is not null && lineNext.Text != "")
         {
-            var clozeNext = MakeClozeWholeLine(lineNext.Text, ref cloze_num);
+            var clozeNext = MakeClozeFirstWord(lineNext.Text, ref cloze_num);
             var formattedNext = GetLineText(clozeNext, lineNext, parameters);
-            formatted += formattedNext;
+            ending += formattedNext;
         }
 
         return new(number, beginning + formatted + ending);
@@ -74,11 +78,23 @@ public partial class WordCreator : BaseCreator<Card>
         return sb.ToString();
     }
 
-    private static string MakeClozeWholeLine(string text, ref int cloze_num)
+    private static string MakeClozeFirstWord(string text, ref int cloze_num)
     {
-        var cloze = $"{{{{c{cloze_num}::{text}::word}}}}";
-        cloze_num++;
-        return cloze;
+        var matches = RegexWord().Matches(text);
+        var sb = new StringBuilder();
+        var last_word_end = 0;
+
+        foreach (var match in matches.Cast<Match>().Take(1))
+        {
+            sb.Append(text[last_word_end..match.Index]);
+            sb.Append($"{{{{c{cloze_num}::{match.Value}::word}}}}");
+
+            cloze_num++;
+
+            last_word_end = match.Index + match.Length;
+        }
+
+        return sb.ToString();
     }
 
     //this regex matches words that may contain apostrophes within them

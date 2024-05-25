@@ -68,7 +68,7 @@ public static partial class LoaderText
 
                 foreach (var wrap in wrapped)
                 {
-                    songLines.Add(new(lineNumber, continousNumber, wrap, LineType.Norm, false));
+                    songLines.Add(new(lineNumber, continousNumber, wrap, LineType.Norm, false, false));
                     lineNumber++;
                     continousNumber++;
                 }
