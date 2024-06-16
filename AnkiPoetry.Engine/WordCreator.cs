@@ -11,7 +11,7 @@ public partial class WordCreator : BaseCreator<Card>
         {
             var to = chunk.Lines[i];
 
-            if (to.LineType is not (LineType.NextSong or LineType.NextPage))
+            if (to.LineType != LineType.NextSong && to.LineType != LineType.NextPage)
             {
                 var number = CreateNumber(chunk.MaxSongNumber, chunk.SectionNumber, chunk.SongNumber, to.LineNumber);
 
