@@ -29,29 +29,40 @@ public static class Chunker
         {
             var lines = new List<MyLine>();
 
-            var title = !String.IsNullOrEmpty(section.Songs[i].SongName) ? section.Songs[i].SongName : section.SectionName;
-            var text_begin = (i != 0 && parameters.OverlapChapters) ? section.Songs[i - 1].Lines.Last().Text : (parameters.TitleToBegin ? title : "");
-            var continous_num_begin = (i != 0 && parameters.OverlapChapters) ? (parameters.Continous ? section.Songs[i - 1].Lines.Last().ContinousNumber : section.Songs[i - 1].Lines.Last().LineNumber) : 0;
+            var song = section.Songs[i];
+            var prev_song = i > 0 ? section.Songs[i - 1] : null;
+            var next_song = i < section.Songs.Length - 1 ? section.Songs[i + 1] : null;
+
+            var title = !String.IsNullOrEmpty(song.SongName) ? song.SongName : section.SectionName;
+
+            var text_begin = (prev_song is not null && parameters.OverlapChapters)
+                ? prev_song.Lines.Last().Text
+                : (parameters.TitleToBegin ? title : "");
+
+            var continous_num_begin = (prev_song is not null && parameters.OverlapChapters)
+                ? (parameters.Continous ? prev_song.Lines.Last().ContinousNumber : prev_song.Lines.Last().LineNumber)
+                : 0;
+
             lines.Add(new(0, continous_num_begin, text_begin, LineType.PrevSong, false, false));
 
-            var first = section.Songs[i].Lines[0];
+            var first = song.Lines[0];
             lines.Add(first with { IsFirst = true });
 
-            lines.AddRange(section.Songs[i].Lines[1..^1]);
+            lines.AddRange(song.Lines[1..^1]);
 
-            var last = section.Songs[i].Lines[^1];
+            var last = song.Lines[^1];
             lines.Add(last with { IsLast = true });
 
-            var new_num = section.Songs[i].Lines.Max(a => a.LineNumber) + 1;
-            var continous_new_num = section.Songs[i].Lines.Max(a => a.ContinousNumber) + 1;
+            var new_num = song.Lines.Max(a => a.LineNumber) + 1;
+            var continous_new_num = song.Lines.Max(a => a.ContinousNumber) + 1;
 
-            if (parameters.OverlapChapters && i != section.Songs.Length - 1)
+            if (parameters.OverlapChapters && next_song is not null)
             {
-                var text_end = section.Songs[i + 1].Lines.First().Text;
+                var text_end = next_song.Lines.First().Text;
                 lines.Add(new(new_num, continous_new_num, text_end, LineType.NextSong, false, false));
             }
 
-            yield return section.Songs[i] with { Lines = [.. lines] };
+            yield return song with { Lines = [.. lines] };
         }
     }
 
