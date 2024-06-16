@@ -8,6 +8,9 @@ Example deck: https://ankiweb.net/shared/info/574333410
 
 Direct link: [docs/William_Shakespeare_-_Hamlet_monologue.apkg](https://github.com/xiety/AnkiPoetry/raw/main/docs/William_Shakespeare_-_Hamlet_monologue.apkg)
 
+## Warning
+
+When importing `.csv` file into Anki make sure that "Mach scope" is set to "Notetype and deck" to prevent cards in other decks from being updated.
 
 ## UI
 

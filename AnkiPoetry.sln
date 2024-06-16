@@ -9,6 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnkiPoetry.Engine", "AnkiPo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnkiPoetry.ConsoleApp", "AnkiPoetry.ConsoleApp\AnkiPoetry.ConsoleApp.csproj", "{34326696-5E08-4AF6-992B-40D62B779E52}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4064B473-78E6-4D58-8E65-00EA660D5043}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
