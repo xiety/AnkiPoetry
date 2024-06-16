@@ -54,13 +54,15 @@ Soon after the lines deck have moved to the next page, I reveal two new cards on
 
 ## Parameters
 
+- `Deck Name` - parent deck name to add to .csv file to simplify import
 - `Chunk size` - number of lines per page
 - `Word Wrap` - number of characters after which to try to split the line
 - `On spaces` - wrap text on spaces or on punctuation
 - `Add dots` - add dots before and after text on wrap
 - `Colors` - number of colors to alternate
 - `Overlap` - add first line to the end of previous chapter and vice versa
-- `Empty End` - add an empty End element
+- `Numbers` - add line number to every line
+- `Continous` - continous line numbers through all text
 
 ## Importing created deck into Anki
 

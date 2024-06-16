@@ -11,8 +11,8 @@
     <div><div class="parameter-name">Add dots: </div><input type="checkbox" @bind="state.Parameters.AddDots" /></div>
     <div><div class="parameter-name">Colors: </div><input type="number" min="1" @bind="state.Parameters.Colors" /></div>
     <div><div class="parameter-name">Overlap: </div><input type="checkbox" @bind="state.Parameters.OverlapChapters" /></div>
-    <div><div class="parameter-name">Title to Begin: </div><input type="checkbox" @bind="state.Parameters.TitleToBegin" /></div>
-    <div><div class="parameter-name">Line numbers: </div><input type="checkbox" @bind="state.Parameters.LineNumbers" /></div>
+    <div><div class="parameter-name">Numbers: </div><input type="checkbox" @bind="state.Parameters.LineNumbers" /></div>
+    <div><div class="parameter-name">Continous: </div><input type="checkbox" @bind="state.Parameters.Continous" /></div>
 </div>
 <div class="json">
     <input @bind:event="onchange" @bind:get="GetJson()" @bind:set="SetJson" />
