@@ -11,7 +11,7 @@ public partial class WordCreator : BaseCreator<Card>
         {
             var to = chunk.Lines[i];
 
-            if (to.LineType != LineType.NextSong && to.LineType != LineType.NextPage)
+            if (!to.NotMy && to.LineType != LineType.NextSong && to.LineType != LineType.NextPage)
             {
                 var number = CreateNumber(chunk.MaxSongNumber, chunk.SectionNumber, chunk.SongNumber, to.LineNumber);
 
@@ -39,7 +39,7 @@ public partial class WordCreator : BaseCreator<Card>
         var cloze = MakeCloze(line.Text, ref cloze_num);
         var formatted = GetLineText(cloze, line, parameters);
 
-        if (lineNext is not null && lineNext.Text != "")
+        if (lineNext is not null && lineNext.Text != "" && !lineNext.NotMy)
         {
             var clozeNext = MakeClozeFirstWord(lineNext.Text, ref cloze_num);
             var formattedNext = GetLineText(clozeNext, lineNext, parameters);

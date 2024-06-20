@@ -94,8 +94,10 @@ public sealed partial class App : IAsyncDisposable
                     $"#deck:{state.Parameters.DeckName}::{info.DeckName}"]);
             }
         }
-        catch
+        catch (Exception ex)
         {
+            Console.WriteLine(ex);
+
             foreach (var info in infos)
             {
                 info.Csv = "Error";
@@ -117,8 +119,9 @@ public sealed partial class App : IAsyncDisposable
         {
             state.Parameters = JsonSerializer.Deserialize<Parameters>(newValue!)!;
         }
-        catch
+        catch (Exception ex)
         {
+            Console.WriteLine(ex);
         }
     }
 

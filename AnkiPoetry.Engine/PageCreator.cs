@@ -19,8 +19,12 @@ public partial class PageCreator : BaseCreator<Card>
         foreach (var line in chunk.Lines)
         {
             var cloze_num = even ? 1 : 2;
+            string text;
 
-            var text = AddLineNumber(line, MakeCloze(cloze_num, line.Text), parameters);
+            if (!line.NotMy && line.Text != String.Empty)
+                text = AddLineNumber(line, MakeCloze(cloze_num, line.Text), parameters);
+            else
+                text = AddLineNumber(line, line.Text, parameters);
 
             if (line.IsFirst)
                 sb.Append("<hr>");

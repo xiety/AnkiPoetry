@@ -8,7 +8,7 @@ public class LineCreator : BaseCreator<Card>
         {
             var to = chunk.Lines[i + 1];
 
-            if (to.LineType != LineType.NextPage)
+            if (!to.NotMy && to.LineType != LineType.NextPage)
             {
                 var number = CreateNumber(chunk.MaxSongNumber, chunk.SectionNumber, chunk.SongNumber, to.LineNumber);
 

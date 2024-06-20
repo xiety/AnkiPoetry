@@ -35,15 +35,17 @@ public static class Chunker
 
             var title = !String.IsNullOrEmpty(song.SongName) ? song.SongName : section.SectionName;
 
-            var text_begin = (prev_song is not null && parameters.OverlapChapters)
-                ? prev_song.Lines.Last().Text
-                : (parameters.TitleToBegin ? title : "");
-
-            var continous_num_begin = (prev_song is not null && parameters.OverlapChapters)
-                ? (parameters.Continous ? prev_song.Lines.Last().ContinousNumber : prev_song.Lines.Last().LineNumber)
-                : 0;
-
-            lines.Add(new(0, continous_num_begin, text_begin, LineType.PrevSong, false, false));
+            if (prev_song is not null && parameters.OverlapChapters)
+            {
+                var prev_line = prev_song.Lines.Last();
+                var text_begin = prev_line.Text;
+                var continous_num_begin = (parameters.Continous ? prev_line.ContinousNumber : prev_line.LineNumber);
+                lines.Add(new(0, continous_num_begin, text_begin, LineType.PrevSong, false, false, false));
+            }
+            else
+            {
+                lines.Add(new(0, 0, title, LineType.PrevSong, false, false, true));
+            }
 
             var first = song.Lines[0];
             lines.Add(first with { IsFirst = true });
@@ -61,8 +63,9 @@ public static class Chunker
 
             if (parameters.OverlapChapters && next_song is not null)
             {
-                var text_end = next_song.Lines.First().Text;
-                lines.Add(new(new_num, continous_new_num, text_end, LineType.NextSong, false, false));
+                var line_end = next_song.Lines.First();
+                var text_end = line_end.Text;
+                lines.Add(new(new_num, continous_new_num, text_end, LineType.NextSong, false, false, line_end.NotMy));
             }
 
             yield return song with { Lines = [.. lines] };

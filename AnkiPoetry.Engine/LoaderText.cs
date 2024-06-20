@@ -68,7 +68,7 @@ public static partial class LoaderText
 
                 foreach (var wrap in wrapped)
                 {
-                    songLines.Add(new(lineNumber, continousNumber, wrap, LineType.Norm, false, false));
+                    songLines.Add(new(lineNumber, continousNumber, wrap, LineType.Norm, false, false, IsNotMy(text)));
                     lineNumber++;
                     continousNumber++;
                 }
@@ -83,4 +83,7 @@ public static partial class LoaderText
 
         return new([.. sections], 100);
     }
+
+    private static bool IsNotMy(string text)
+        => text.StartsWith('@');
 }
