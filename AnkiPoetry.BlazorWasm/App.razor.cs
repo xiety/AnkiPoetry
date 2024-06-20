@@ -75,21 +75,31 @@ public sealed partial class App : IAsyncDisposable
 
     private void Generate()
     {
-        LocalStorage.SetItem(StateKey, state);
-
-        var doc = LoaderText.LoadText(state.Text, state.Parameters);
-
-        var chunks = Chunker.Run(doc, state.Parameters);
-
-        samples = creator_sample.Run(chunks, state.Parameters);
-
-        foreach (var info in infos)
+        try
         {
-            var cards = info.Creator.Run(chunks, state.Parameters);
-            info.Csv = CsvSaver.CreateCsv(cards, [
-                "#separator:semicolon",
-                $"#notetype:poetry::{info.Id}",
-                $"#deck:{state.Parameters.DeckName}::{info.DeckName}"]);
+            LocalStorage.SetItem(StateKey, state);
+
+            var doc = LoaderText.LoadText(state.Text, state.Parameters);
+
+            var chunks = Chunker.Run(doc, state.Parameters);
+
+            samples = creator_sample.Run(chunks, state.Parameters);
+
+            foreach (var info in infos)
+            {
+                var cards = info.Creator.Run(chunks, state.Parameters);
+                info.Csv = CsvSaver.CreateCsv(cards, [
+                    "#separator:semicolon",
+                    $"#notetype:poetry::{info.Id}",
+                    $"#deck:{state.Parameters.DeckName}::{info.DeckName}"]);
+            }
+        }
+        catch
+        {
+            foreach (var info in infos)
+            {
+                info.Csv = "Error";
+            }
         }
     }
 
