@@ -48,10 +48,13 @@ public static class Chunker
             var first = song.Lines[0];
             lines.Add(first with { IsFirst = true });
 
-            lines.AddRange(song.Lines[1..^1]);
+            if (song.Lines.Length > 1)
+            {
+                lines.AddRange(song.Lines[1..^1]);
 
-            var last = song.Lines[^1];
-            lines.Add(last with { IsLast = true });
+                var last = song.Lines[^1];
+                lines.Add(last with { IsLast = true });
+            }
 
             var new_num = song.Lines.Max(a => a.LineNumber) + 1;
             var continous_new_num = song.Lines.Max(a => a.ContinousNumber) + 1;
