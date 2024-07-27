@@ -53,6 +53,7 @@ Soon after the lines deck have moved to the next page, I reveal two new cards on
 
 - `#` - the title of the book
 - `##` - the title of the chapter
+- `@` - not my lines (show them but don't memorize them)
 
 ## Parameters
 
