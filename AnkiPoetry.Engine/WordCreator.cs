@@ -49,17 +49,9 @@ public partial class WordCreator : BaseCreator<Card>
         return new(number, beginning + formatted + ending);
     }
 
-    private static string GetFirstWord(string text)
-    {
-        var matches = RegexWord().Matches(text);
-        var match = matches[0];
-
-        return text[0..(match.Index + match.Length)];
-    }
-
     private static string MakeCloze(string text, ref int cloze_num)
     {
-        var matches = RegexWord().Matches(text);
+        var matches = Regexes.RegexWord().Matches(text);
         var sb = new StringBuilder();
         var last_word_end = 0;
 
@@ -80,14 +72,14 @@ public partial class WordCreator : BaseCreator<Card>
 
     private static string MakeClozeFirstWord(string text, ref int cloze_num)
     {
-        var matches = RegexWord().Matches(text);
+        var matches = Regexes.RegexWord().Matches(text);
         var sb = new StringBuilder();
         var last_word_end = 0;
 
         foreach (var match in matches.Cast<Match>().Take(1))
         {
-            sb.Append(text[last_word_end..match.Index]);
-            sb.Append($"{{{{c{cloze_num}::{match.Value}::word}}}}");
+            var word = text[last_word_end..(match.Index + match.Length)];
+            sb.Append($"{{{{c{cloze_num}::{word}::word}}}}");
 
             cloze_num++;
 
@@ -96,8 +88,4 @@ public partial class WordCreator : BaseCreator<Card>
 
         return sb.ToString();
     }
-
-    //this regex matches words that may contain apostrophes within them
-    [GeneratedRegex(@"\b(?:'\b|\B'\B)?\w+(?:'\w+)*\b")]
-    private static partial Regex RegexWord();
 }
