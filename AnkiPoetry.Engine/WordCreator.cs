@@ -74,16 +74,25 @@ public partial class WordCreator : BaseCreator<Card>
     {
         var matches = Regexes.RegexWord().Matches(text);
         var sb = new StringBuilder();
-        var last_word_end = 0;
 
-        foreach (var match in matches.Cast<Match>().Take(1))
+        if (matches.Count > 0)
         {
-            var word = text[last_word_end..(match.Index + match.Length)];
+            var i = 0;
+            var word = "";
+
+            while (i < matches.Count && word.Count(char.IsLetter) < 4)
+            {
+                var match = matches[i];
+                word = text[0..(match.Index + match.Length)];
+                i++;
+            }
+
+            if (i < matches.Count)
+                word += "...";
+
             sb.Append($"{{{{c{cloze_num}::{word}::word}}}}");
 
             cloze_num++;
-
-            last_word_end = match.Index + match.Length;
         }
 
         return sb.ToString();
