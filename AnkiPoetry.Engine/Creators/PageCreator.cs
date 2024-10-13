@@ -12,7 +12,7 @@ public partial class PageCreator : BaseCreator<Card>
         var number = CreateNumber(chunk.MaxSongNumber, chunk.SectionNumber, chunk.SongNumber, from.LineNumber);
 
         yield return CreateOddEven(chunk, parameters, header, number);
-        yield return CreateFirstWord(chunk, parameters, header, number);
+        yield return CreateFirstLetter(chunk, parameters, header, number);
     }
 
     private Card CreateOddEven(Chunk chunk, Parameters parameters, string header, string number)
@@ -38,7 +38,7 @@ public partial class PageCreator : BaseCreator<Card>
         return new(number, sb.ToString());
     }
 
-    private Card CreateFirstWord(Chunk chunk, Parameters parameters, string header, string number)
+    private Card CreateFirstLetter(Chunk chunk, Parameters parameters, string header, string number)
     {
         var sb = new StringBuilder();
         sb.Append(header);
@@ -47,8 +47,8 @@ public partial class PageCreator : BaseCreator<Card>
         {
             var inner_text = line.Text;
 
-            if (!line.NotMy && line.Text != String.Empty)
-                inner_text = MakeClozeLeaveFirstWord(1, line.Text);
+            if (!line.NotMy && line.Text != String.Empty && line != chunk.Lines[0])
+                inner_text = MakeClozeLeaveFirstLetter(1, line.Text);
 
             var text = AddLineNumber(line, inner_text, parameters);
             sb.Append(AddHr(line, text));
@@ -83,6 +83,13 @@ public partial class PageCreator : BaseCreator<Card>
             ? matches[0].Index + matches[0].Length
             : matches[1].Index;
 
+        return text[0..n] + $"{{{{c{cloze_num}::{text[n..]}}}}}";
+    }
+
+    private static string MakeClozeLeaveFirstLetter(int cloze_num, string text)
+    {
+        var matches = Regexes.RegexWord().Matches(text);
+        var n = matches[0].Index + 1;
         return text[0..n] + $"{{{{c{cloze_num}::{text[n..]}}}}}";
     }
 }
