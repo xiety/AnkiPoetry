@@ -43,7 +43,11 @@ public partial class WordCreator : BaseCreator<Card>
         {
             var clozeNext = MakeClozeFirstWord(lineNext.Text, ref cloze_num);
             var formattedNext = GetLineText(clozeNext, lineNext, parameters);
+
             ending += formattedNext;
+
+            if (lineNext.IsLast)
+                ending += "<hr>";
         }
 
         return new(number, beginning + formatted + ending);
