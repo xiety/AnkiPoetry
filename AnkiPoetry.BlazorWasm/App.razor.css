@@ -73,25 +73,29 @@
 }
 
 ::deep.card .line0 {
-    color: #af2acd;
+    color: #FF6666;
 }
 
 ::deep.card .line1 {
-    color: #ff6666;
+    color: #FF9166;
 }
 
 ::deep.card .line2 {
-    color: #ffbd55;
+    color: #FFFF66;
 }
 
 ::deep.card .line3 {
-    color: #ffff66;
+    color: #66FF66;
 }
 
 ::deep.card .line4 {
-    color: #9de24f;
+    color: #66FFFF;
 }
 
 ::deep.card .line5 {
-    color: #87cefa;
+    color: #7777FF;
+}
+
+::deep.card .line6 {
+    color: #FF66FF;
 }

@@ -11,7 +11,7 @@ public partial class SampleCreator : BaseCreator<Card>
 
         var sb = new StringBuilder();
 
-        var header = CreateHeader(chunk.Header);
+        var header = CreateHeader(chunk, parameters);
         sb.Append(header);
 
         foreach (var line in chunk.Lines)

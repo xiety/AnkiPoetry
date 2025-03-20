@@ -7,12 +7,11 @@
     <div><div class="parameter-name">Deck name: </div><input @bind="state.Parameters.DeckName" /></div>
     <div><div class="parameter-name">Chunk size: </div><input type="number" min="1" @bind="state.Parameters.ChunkSize" /></div>
     <div><div class="parameter-name">Word Wrap: </div><input type="number" min="-1" @bind="state.Parameters.WordWrap" /></div>
-    <div><div class="parameter-name">On spaces: </div><input type="checkbox" @bind="state.Parameters.WrapOnSpaces" /></div>
     <div><div class="parameter-name">Add dots: </div><input type="checkbox" @bind="state.Parameters.AddDots" /></div>
     <div><div class="parameter-name">Colors: </div><input type="number" min="1" @bind="state.Parameters.Colors" /></div>
     <div><div class="parameter-name">Overlap: </div><input type="checkbox" @bind="state.Parameters.OverlapChapters" /></div>
     <div><div class="parameter-name">Numbers: </div><input type="checkbox" @bind="state.Parameters.LineNumbers" /></div>
-    <div><div class="parameter-name">Continous: </div><input type="checkbox" @bind="state.Parameters.Continous" /></div>
+    <div><div class="parameter-name">Continuous: </div><input type="checkbox" @bind="state.Parameters.Continuous" /></div>
 </div>
 <div class="json">
     <input @bind:event="onchange" @bind:get="GetJson()" @bind:set="SetJson" />

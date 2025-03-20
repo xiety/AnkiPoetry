@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
 using AnkiPoetry.Engine;
 
@@ -28,6 +29,8 @@ public sealed partial class App : IAsyncDisposable
 
     private readonly SampleCreator creator_sample = new();
 
+    private readonly JsonSerializerOptions options = new();
+
     //mutable
     private IJSObjectReference? module;
     private State state = new();
@@ -35,6 +38,8 @@ public sealed partial class App : IAsyncDisposable
 
     protected override void OnInitialized()
     {
+        options.Converters.Add(new JsonStringEnumConverter());
+
         State? savedState;
 
         try
@@ -60,9 +65,13 @@ public sealed partial class App : IAsyncDisposable
     private void LoadHamlet()
     {
         state.Text = Samples.HamletText;
-        state.Parameters.ChunkSize = 20;
-        state.Parameters.WordWrap = -1;
-        state.Parameters.Colors = 6;
+        state.Parameters = new()
+        {
+            DeckName = "Hamlet",
+            ChunkSize = 20,
+            WordWrap = -1,
+            Colors = 7,
+        };
 
         Generate();
     }
@@ -111,13 +120,14 @@ public sealed partial class App : IAsyncDisposable
             await module.InvokeVoidAsync("downloadContent", element_id, file_name);
     }
 
-    private string GetJson() => JsonSerializer.Serialize(state.Parameters);
+    private string GetJson()
+        => JsonSerializer.Serialize(state.Parameters, options);
 
     private void SetJson(string? newValue)
     {
         try
         {
-            state.Parameters = JsonSerializer.Deserialize<Parameters>(newValue!)!;
+            state.Parameters = JsonSerializer.Deserialize<Parameters>(newValue!, options)!;
         }
         catch (Exception ex)
         {

@@ -18,7 +18,7 @@ public static partial class LoaderText
         var sectionNumber = 1;
         var songNumber = 1;
         var lineNumber = 1;
-        var continousNumber = 1;
+        var continuousNumber = 1;
 
         foreach (var text in lines)
         {
@@ -68,9 +68,9 @@ public static partial class LoaderText
 
                 foreach (var wrap in wrapped)
                 {
-                    songLines.Add(new(lineNumber, continousNumber, wrap, LineType.Norm, false, false, IsNotMy(text)));
+                    songLines.Add(new(lineNumber, continuousNumber, wrap, LineType.Norm, false, false, IsNotMy(text)));
                     lineNumber++;
-                    continousNumber++;
+                    continuousNumber++;
                 }
             }
         }

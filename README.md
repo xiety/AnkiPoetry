@@ -65,7 +65,7 @@ Soon after the lines deck have moved to the next page, I reveal two new cards on
 - `Colors` - number of colors to alternate
 - `Overlap` - add first line to the end of previous chapter and vice versa
 - `Numbers` - add line number to every line
-- `Continous` - continous line numbers through all text
+- `Continuous` - continuous line numbers through all text
 
 ## Importing created deck into Anki
 

@@ -7,40 +7,11 @@ public static class TextWrapper
         if (parameters.WordWrap == -1 || text.Length <= parameters.WordWrap)
             return [text];
 
-        var lines = parameters.WrapOnSpaces
-            ? WrapOnSpaces(text, parameters.WordWrap).ToArray()
-            : WrapOnPunctuation(text, parameters.WordWrap).ToArray();
+        var lines = WrapOnSpaces(text, parameters.WordWrap).ToArray();
 
         return parameters.AddDots
             ? AddDots(lines).ToArray()
             : lines;
-    }
-
-    private static IEnumerable<string> WrapOnPunctuation(string text, int word_wrap)
-    {
-        var items = Split(text);
-
-        var c = "";
-
-        foreach (var item in items)
-        {
-            var n = c + item;
-
-            if (n.Length > word_wrap)
-            {
-                if (c != "")
-                    yield return c.Trim();
-
-                c = item;
-            }
-            else
-            {
-                c = n;
-            }
-        }
-
-        if (c != "")
-            yield return c.Trim();
     }
 
     private static IEnumerable<string> WrapOnSpaces(string text, int word_wrap)
@@ -88,27 +59,5 @@ public static class TextWrapper
                     yield return $"..{line}..";
             }
         }
-    }
-
-    private static IEnumerable<string> Split(string text)
-    {
-        var currentPart = "";
-
-        foreach (var c in text)
-        {
-            currentPart += c;
-
-            if (!char.IsLetterOrDigit(c) && c != ' ')
-            {
-                if (currentPart != "")
-                {
-                    yield return currentPart;
-                    currentPart = "";
-                }
-            }
-        }
-
-        if (currentPart != "")
-            yield return currentPart;
     }
 }

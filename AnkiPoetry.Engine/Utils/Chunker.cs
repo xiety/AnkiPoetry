@@ -7,17 +7,20 @@ public static class Chunker
 
     public static IEnumerable<Chunk> RunEnumerable(MyDocument doc, Parameters parameters)
     {
+        var chunk_number = 0;
+
         foreach (var section in doc.Sections)
         {
             foreach (var song in Augmented(section, parameters))
             {
-                var screen_number = 1;
+                var screen_number = 0;
 
                 foreach (var chunk in ChunksWithOverlap(song.Lines, parameters.ChunkSize))
                 {
                     var header = CreateHeader(section, song, screen_number);
-                    yield return new(doc.MaxSongNumber, header, section.SectionNumber, song.SongNumber, chunk);
+                    yield return new(doc.MaxSongNumber, header, section.SectionNumber, song.SongNumber, screen_number, chunk_number, chunk);
                     screen_number++;
+                    chunk_number++;
                 }
             }
         }
@@ -39,8 +42,8 @@ public static class Chunker
             {
                 var prev_line = prev_song.Lines.Last();
                 var text_begin = prev_line.Text;
-                var continous_num_begin = (parameters.Continous ? prev_line.ContinousNumber : prev_line.LineNumber);
-                lines.Add(new(0, continous_num_begin, text_begin, LineType.PrevSong, false, false, false));
+                var continuous_num_begin = (parameters.Continuous ? prev_line.ContinuousNumber : prev_line.LineNumber);
+                lines.Add(new(0, continuous_num_begin, text_begin, LineType.PrevSong, false, false, false));
             }
             else
             {
@@ -59,13 +62,13 @@ public static class Chunker
             }
 
             var new_num = song.Lines.Max(a => a.LineNumber) + 1;
-            var continous_new_num = song.Lines.Max(a => a.ContinousNumber) + 1;
+            var continuous_new_num = song.Lines.Max(a => a.ContinuousNumber) + 1;
 
             if (parameters.OverlapChapters && next_song is not null)
             {
                 var line_end = next_song.Lines.First();
                 var text_end = line_end.Text;
-                lines.Add(new(new_num, continous_new_num, text_end, LineType.NextSong, false, false, line_end.NotMy));
+                lines.Add(new(new_num, continuous_new_num, text_end, LineType.NextSong, false, false, line_end.NotMy));
             }
 
             yield return song with { Lines = [.. lines] };
@@ -106,12 +109,12 @@ public static class Chunker
             yield return result.ToArray();
     }
 
-    private static string CreateHeader(MySection section, MySong song, int screenNumber)
+    private static string CreateHeader(MySection section, MySong song, int screen_number)
     {
         string[] elements = [section.SectionName, song.SongName];
         var title = String.Join(", ", elements.Where(a => !String.IsNullOrEmpty(a)));
-        return $"{title} ({screenNumber})";
+        return $"{title} ({(screen_number + 1)})";
     }
 }
 
-public record Chunk(int MaxSongNumber, string Header, int SectionNumber, int SongNumber, MyLine[] Lines);
+public record Chunk(int MaxSongNumber, string Header, int SectionNumber, int SongNumber, int ScreenNumber, int ChunkNumber, MyLine[] Lines);

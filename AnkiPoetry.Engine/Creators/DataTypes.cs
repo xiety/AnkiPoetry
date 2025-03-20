@@ -3,7 +3,7 @@
 public record MyDocument(MySection[] Sections, int MaxSongNumber);
 public record MySection(int SectionNumber, string SectionName, MySong[] Songs);
 public record MySong(int SongNumber, string SongName, MyLine[] Lines);
-public record MyLine(int LineNumber, int ContinousNumber, string Text, LineType LineType, bool IsFirst, bool IsLast, bool NotMy);
+public record MyLine(int LineNumber, int ContinuousNumber, string Text, LineType LineType, bool IsFirst, bool IsLast, bool NotMy);
 public record Card(string Number, string Text);
 
 public enum LineType { Norm, PrevPage, NextPage, PrevSong, NextSong };
@@ -13,10 +13,18 @@ public record Parameters
     public string DeckName { get; set; } = "";
     public int ChunkSize { get; set; } = 20;
     public int WordWrap { get; set; } = -1;
-    public bool WrapOnSpaces { get; set; } = true;
     public bool AddDots { get; set; } = false;
-    public int Colors { get; set; } = 6;
+    public int Colors { get; set; } = 7;
     public bool OverlapChapters { get; set; } = true;
     public bool LineNumbers { get; set; } = true;
-    public bool Continous { get; set; } = true;
+    public bool Continuous { get; set; } = true;
+    public StarMode StarMode { get; set; } = StarMode.PerChunk;
+}
+
+public enum StarMode
+{
+    None,
+    PerChunk,
+    PerSection,
+    PerSong,
 }
