@@ -6,7 +6,7 @@ public abstract class BaseCreator<T>
 {
     protected abstract IEnumerable<T> CardFromChunk(Chunk chunk, Parameters parameters);
 
-    public T[] Run(Chunk[] chunks, Parameters parameters)
+    public virtual T[] Run(Chunk[] chunks, Parameters parameters)
     {
         if (parameters.Colors <= 0)
             parameters.Colors = 1;
@@ -20,7 +20,7 @@ public abstract class BaseCreator<T>
 
         foreach (var line in list)
         {
-            var text = GetLineText(line.Text, line, parameters);
+            var text = GetLineText(line, line.Text, parameters);
 
             if (line.IsFirst)
                 sb.Append("<hr>");
@@ -43,8 +43,6 @@ public abstract class BaseCreator<T>
 
         if (parameters.StarMode != StarMode.None)
         {
-            var total = 5;
-
             var num = parameters.StarMode switch
             {
                 StarMode.PerChunk => chunk.ChunkNumber,
@@ -53,13 +51,14 @@ public abstract class BaseCreator<T>
                 _ => throw new NotImplementedException(),
             };
 
-            var stars = num % total;
-            var color = (num / total) % parameters.Colors;
+            var stars = num % parameters.StarNumber;
+            var color = (num / parameters.StarNumber) % parameters.Colors;
 
-            var starsText = String.Join("", Enumerable.Range(0, total).Select(a => a == stars ? "★" : "☆"));
+            var starsText = String.Join("", Enumerable.Range(0, parameters.StarNumber)
+                .Select(a => a == stars ? "★" : "☆"));
 
             starsHtml = $" <span class=\"line{color}\">{starsText}</span>";
-        }        
+        }
 
         return $"<div class=\"header\">{chunk.Header}{starsHtml}</div>";
     }
@@ -74,10 +73,7 @@ public abstract class BaseCreator<T>
     static string ColorLine(string text, int n, int colors)
         => $"<div class=\"line{Mod(n, colors)}\">" + text + "</div>";
 
-    protected string GetLineText(string text, MyLine line, Parameters parameters)
-        => AddLineNumber(line, text, parameters);
-
-    protected string AddLineNumber(MyLine line, string text, Parameters parameters)
+    protected string GetLineText(MyLine line, string text, Parameters parameters)
     {
         var number = parameters.LineNumbers
             ? $"{(parameters.Continuous ? line.ContinuousNumber : line.LineNumber),3}. "
@@ -85,7 +81,7 @@ public abstract class BaseCreator<T>
 
         return ColorLine(
             number + text,
-            (line.LineNumber - 1), //to make first (zero) line violet not red
+            (line.NumberForColor - 1), //to make first (zero) line violet not red
             parameters.Colors);
     }
 }

@@ -3,7 +3,7 @@
 public record MyDocument(MySection[] Sections, int MaxSongNumber);
 public record MySection(int SectionNumber, string SectionName, MySong[] Songs);
 public record MySong(int SongNumber, string SongName, MyLine[] Lines);
-public record MyLine(int LineNumber, int ContinuousNumber, string Text, LineType LineType, bool IsFirst, bool IsLast, bool NotMy);
+public record MyLine(int LineNumber, int ContinuousNumber, int NumberForColor, string Text, LineType LineType, bool IsFirst, bool IsLast, bool NotMy);
 public record Card(string Number, string Text);
 
 public enum LineType { Norm, PrevPage, NextPage, PrevSong, NextSong };
@@ -19,6 +19,8 @@ public record Parameters
     public bool LineNumbers { get; set; } = true;
     public bool Continuous { get; set; } = true;
     public StarMode StarMode { get; set; } = StarMode.PerChunk;
+    public int StarNumber { get; set; } = 5;
+    public bool AddTitles { get; set; } = true;
 }
 
 public enum StarMode

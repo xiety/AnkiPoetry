@@ -37,12 +37,12 @@ public partial class WordCreator : BaseCreator<Card>
     {
         var cloze_num = 1;
         var cloze = MakeCloze(line.Text, ref cloze_num);
-        var formatted = GetLineText(cloze, line, parameters);
+        var formatted = GetLineText(line, cloze, parameters);
 
         if (lineNext is not null && lineNext.Text != "" && !lineNext.NotMy)
         {
             var clozeNext = MakeClozeFirstWord(lineNext.Text, ref cloze_num);
-            var formattedNext = GetLineText(clozeNext, lineNext, parameters);
+            var formattedNext = GetLineText(lineNext, clozeNext, parameters);
 
             ending += formattedNext;
 

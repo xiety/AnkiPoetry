@@ -19,7 +19,7 @@ public partial class SampleCreator : BaseCreator<Card>
             if (line.IsFirst)
                 sb.Append("<hr>");
 
-            var text = GetLineText(line.Text, line, parameters);
+            var text = GetLineText(line, line.Text, parameters);
 
             sb.Append(text);
 

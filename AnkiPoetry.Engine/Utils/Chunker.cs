@@ -5,7 +5,7 @@ public static class Chunker
     public static Chunk[] Run(MyDocument doc, Parameters parameters)
         => RunEnumerable(doc, parameters).ToArray();
 
-    public static IEnumerable<Chunk> RunEnumerable(MyDocument doc, Parameters parameters)
+    private static IEnumerable<Chunk> RunEnumerable(MyDocument doc, Parameters parameters)
     {
         var chunk_number = 0;
 
@@ -18,7 +18,7 @@ public static class Chunker
                 foreach (var chunk in ChunksWithOverlap(song.Lines, parameters.ChunkSize))
                 {
                     var header = CreateHeader(section, song, screen_number);
-                    yield return new(doc.MaxSongNumber, header, section.SectionNumber, song.SongNumber, screen_number, chunk_number, chunk);
+                    yield return new(doc.MaxSongNumber, header, section.SectionNumber, section.SectionName, song.SongNumber, screen_number, chunk_number, chunk);
                     screen_number++;
                     chunk_number++;
                 }
@@ -43,11 +43,11 @@ public static class Chunker
                 var prev_line = prev_song.Lines.Last();
                 var text_begin = prev_line.Text;
                 var continuous_num_begin = (parameters.Continuous ? prev_line.ContinuousNumber : prev_line.LineNumber);
-                lines.Add(new(0, continuous_num_begin, text_begin, LineType.PrevSong, false, false, false));
+                lines.Add(new(0, continuous_num_begin, 0, text_begin, LineType.PrevSong, false, false, false));
             }
             else
             {
-                lines.Add(new(0, 0, title, LineType.PrevSong, false, false, true));
+                lines.Add(new(0, 0, 0, title, LineType.PrevSong, false, false, true));
             }
 
             var first = song.Lines[0];
@@ -68,7 +68,7 @@ public static class Chunker
             {
                 var line_end = next_song.Lines.First();
                 var text_end = line_end.Text;
-                lines.Add(new(new_num, continuous_new_num, text_end, LineType.NextSong, false, false, line_end.NotMy));
+                lines.Add(new(new_num, continuous_new_num, new_num, text_end, LineType.NextSong, false, false, line_end.NotMy));
             }
 
             yield return song with { Lines = [.. lines] };
@@ -117,4 +117,4 @@ public static class Chunker
     }
 }
 
-public record Chunk(int MaxSongNumber, string Header, int SectionNumber, int SongNumber, int ScreenNumber, int ChunkNumber, MyLine[] Lines);
+public record Chunk(int MaxSongNumber, string Header, int SectionNumber, string SectionName, int SongNumber, int ScreenNumber, int ChunkNumber, MyLine[] Lines);
