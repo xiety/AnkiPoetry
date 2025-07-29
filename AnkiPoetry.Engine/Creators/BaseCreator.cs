@@ -73,15 +73,18 @@ public abstract class BaseCreator<T>
     static string ColorLine(string text, int n, int colors)
         => $"<div class=\"line{Mod(n, colors)}\">" + text + "</div>";
 
-    protected string GetLineText(MyLine line, string text, Parameters parameters)
+    protected virtual string GetLineText(MyLine line, string text, Parameters parameters)
     {
-        var number = parameters.LineNumbers
-            ? $"{(parameters.Continuous ? line.ContinuousNumber : line.LineNumber),3}. "
-            : "";
+        var number = GetLineNumber(line, parameters);
 
         return ColorLine(
             number + text,
             (line.NumberForColor - 1), //to make first (zero) line violet not red
             parameters.Colors);
     }
+
+    protected static string GetLineNumber(MyLine line, Parameters parameters)
+        => parameters.LineNumbers
+            ? $"{(parameters.Continuous ? line.ContinuousNumber : line.LineNumber),3}. "
+            : "";
 }

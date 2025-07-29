@@ -10,7 +10,7 @@ Direct link: [docs/William_Shakespeare_-_Hamlet_monologue.apkg](https://github.c
 
 ## Warning
 
-When importing `.csv` file into Anki make sure that "Mach scope" is set to "Notetype and deck" to prevent cards in other decks from being updated.
+When importing `.csv` file into Anki make sure that "Match scope" is set to "Notetype and deck" to prevent cards in other decks from being updated.
 
 You can start a line with `@` symbol to mark lines you don't want to learn.
 

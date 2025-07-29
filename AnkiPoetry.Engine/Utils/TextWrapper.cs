@@ -2,61 +2,38 @@
 
 public static class TextWrapper
 {
-    public static string[] Wrap(string text, Parameters parameters)
+    public static IEnumerable<string> Wrap(string text, Parameters parameters)
     {
-        if (parameters.WordWrap == -1 || text.Length <= parameters.WordWrap)
-            return [text];
-
-        var lines = WrapOnSpaces(text, parameters.WordWrap).ToArray();
-
-        return parameters.AddDots
-            ? AddDots(lines).ToArray()
-            : lines;
-    }
-
-    private static IEnumerable<string> WrapOnSpaces(string text, int word_wrap)
-    {
-        var items = text.Split(' ');
-
-        var c = "";
-
-        foreach (var item in items)
+        if (parameters.WordWrap == -1)
         {
-            var n = (c == "") ? item : c + " " + item;
-
-            if (n.Length > word_wrap)
-            {
-                if (c != "")
-                    yield return c.Trim();
-
-                c = item;
-            }
-            else
-            {
-                c = n;
-            }
+            yield return text;
+            yield break;
         }
 
-        if (c != "")
-            yield return c.Trim();
-    }
-
-    private static IEnumerable<string> AddDots(string[] lines)
-    {
-        if (lines.Length == 1)
+        var matches = Regexes.RegexWord().Matches(text);
+        if (matches.Count == 0)
         {
-            yield return lines[0];
+            yield return text;
+            yield break;
         }
-        else
+
+        var start = matches[0].Index;
+        var longWordCount = 0;
+
+        for (var i = 0; i < matches.Count; ++i)
         {
-            foreach (var (line, index) in lines.Indexed())
+            if (matches[i].Value.Length >= 4)
+                longWordCount++;
+
+            var isLast = i == matches.Count - 1;
+            var shouldWrap = longWordCount == parameters.WordWrap || isLast;
+
+            if (shouldWrap)
             {
-                if (index == 0)
-                    yield return $"{line}..";
-                else if (index == lines.Length - 1)
-                    yield return $"..{line}";
-                else
-                    yield return $"..{line}..";
+                var end = isLast ? text.Length : matches[i + 1].Index;
+                yield return text[start..end].TrimEnd();
+                start = end;
+                longWordCount = 0;
             }
         }
     }

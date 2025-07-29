@@ -13,7 +13,6 @@ public record Parameters
     public string DeckName { get; set; } = "";
     public int ChunkSize { get; set; } = 20;
     public int WordWrap { get; set; } = -1;
-    public bool AddDots { get; set; } = false;
     public int Colors { get; set; } = 7;
     public bool OverlapChapters { get; set; } = true;
     public bool LineNumbers { get; set; } = true;
