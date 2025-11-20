@@ -1,0 +1,37 @@
+﻿.card hr {
+    height: 0px;
+    border: none;
+    border-top: 1px solid white;
+}
+
+.card .hiddenInfo {
+    display: none;
+}
+
+.card .line0 {
+    color: #FF6666;
+}
+
+.card .line1 {
+    color: #FF9166;
+}
+
+.card .line2 {
+    color: #FFFF66;
+}
+
+.card .line3 {
+    color: #66FF66;
+}
+
+.card .line4 {
+    color: #66FFFF;
+}
+
+.card .line5 {
+    color: #7777FF;
+}
+
+.card .line6 {
+    color: #FF66FF;
+}

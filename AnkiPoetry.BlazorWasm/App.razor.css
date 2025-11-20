@@ -65,37 +65,3 @@
     color: white;
     font-size: 14px;
 }
-
-::deep.card hr {
-    height: 0px;
-    border: none;
-    border-top: 1px solid white;
-}
-
-::deep.card .line0 {
-    color: #FF6666;
-}
-
-::deep.card .line1 {
-    color: #FF9166;
-}
-
-::deep.card .line2 {
-    color: #FFFF66;
-}
-
-::deep.card .line3 {
-    color: #66FF66;
-}
-
-::deep.card .line4 {
-    color: #66FFFF;
-}
-
-::deep.card .line5 {
-    color: #7777FF;
-}
-
-::deep.card .line6 {
-    color: #FF66FF;
-}
