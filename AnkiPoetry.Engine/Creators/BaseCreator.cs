@@ -60,7 +60,9 @@ public abstract class BaseCreator<T>
             starsHtml = $" <span class=\"line{color}\">{starsText}</span>";
         }
 
-        return $"<div class=\"header\">{chunk.Header}{starsHtml}</div>";
+        var hiddenInfo = $"<div class=\"hiddenInfo\">{chunk.ChunkNumber + 1}</div>";
+
+        return $"{hiddenInfo}<div class=\"header\">{chunk.Header}{starsHtml}</div>";
     }
 
     //C# operator % returns negative numbers for negative x, so we need to adjust result
