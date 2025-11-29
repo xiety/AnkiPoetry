@@ -26,7 +26,7 @@ public sealed partial class App : IAsyncDisposable
         new(new LineCreator(), "poetry::line", "Line", "2. line"),
         new(new PageCreator(), "poetry::page", "Page", "3. page"),
         new(new TitleCreator(), "poetry::page", "Title", "4. title"),
-        new(new LineBackCreator(), "poetry::line", "Page", "5. line-back"),
+        new(new LineBackCreator(), "poetry::line", "LineBack", "5. line-back"),
     ];
 
     private readonly SampleCreator creator_sample = new();
@@ -101,7 +101,7 @@ public sealed partial class App : IAsyncDisposable
                 var cards = info.Creator.Run(chunks, state.Parameters);
                 info.Csv = CsvSaver.CreateCsv(cards, [
                     "#separator:semicolon",
-                    $"#notetype:{info.Id}",
+                    $"#notetype:{info.NoteType}",
                     $"#deck:{state.Parameters.DeckName}::{info.DeckName}"]);
             }
         }
@@ -143,10 +143,10 @@ public sealed partial class App : IAsyncDisposable
             await module.DisposeAsync();
     }
 
-    record CreatorInfo(BaseCreator<Card> Creator, string Id, string Title, string DeckName)
+    record CreatorInfo(BaseCreator<Card> Creator, string NoteType, string Title, string DeckName)
     {
         public string Csv { get; set; } = "";
-        public string ElementId => $"text_{Id}";
+        public string ElementId => $"text_{Title}";
         public string FileName => DeckName + ".csv";
     }
 

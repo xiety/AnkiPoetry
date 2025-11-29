@@ -39,7 +39,7 @@ public abstract class BaseCreator<T>
 
     protected static string CreateHeader(Chunk chunk, Parameters parameters)
     {
-        var starsHtml = "";
+        var hiddenInfo = "";
 
         if (parameters.StarMode != StarMode.None)
         {
@@ -51,18 +51,10 @@ public abstract class BaseCreator<T>
                 _ => throw new NotImplementedException(),
             };
 
-            var stars = num % parameters.StarNumber;
-            var color = (num / parameters.StarNumber) % parameters.Colors;
-
-            var starsText = String.Join("", Enumerable.Range(0, parameters.StarNumber)
-                .Select(a => a == stars ? "★" : "☆"));
-
-            starsHtml = $" <span class=\"line{color}\">{starsText}</span>";
+            hiddenInfo = $"<div class=\"hiddenInfo\">{num + 1}</div>";
         }
 
-        var hiddenInfo = $"<div class=\"hiddenInfo\">{chunk.ChunkNumber + 1}</div>";
-
-        return $"{hiddenInfo}<div class=\"header\">{chunk.Header}{starsHtml}</div>";
+        return $"{hiddenInfo}<div class=\"header\">{chunk.Header}</div>";
     }
 
     //C# operator % returns negative numbers for negative x, so we need to adjust result

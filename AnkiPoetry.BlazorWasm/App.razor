@@ -26,9 +26,9 @@
 {
     <div class="item">
         <div class="item-name">@info.Title:</div>
-        <textarea id="@info.Id" @bind="info.Csv" />
+        <textarea id="@info.ElementId" @bind="info.Csv" />
         <div class="item-buttons">
-            <button @onclick="@(() => DownloadContent(info.Id, info.FileName))">Download '@info.FileName'</button>
+            <button @onclick="@(() => DownloadContent(info.ElementId, info.FileName))">Download '@info.FileName'</button>
         </div>
     </div>
 }
