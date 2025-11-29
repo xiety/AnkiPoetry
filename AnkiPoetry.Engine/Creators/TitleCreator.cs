@@ -2,12 +2,51 @@
 
 namespace AnkiPoetry.Engine;
 
-public partial class PageCreator : BaseCreator<Card>
+public partial class TitleCreator : BaseCreator<Card>
 {
+    public override Card[] Run(Chunk[] chunks, Parameters parameters)
+    {
+        var titleParameters = parameters with
+        {
+            ChunkSize = parameters.StarNumber + 1,
+            StarMode = StarMode.None,
+        };
+
+        var titleDoc = CreateTitlesDoc(chunks, titleParameters);
+        var titleChunks = Chunker.Run(titleDoc, titleParameters)
+            .Where(a => a.Lines.Length > 2).ToArray();
+
+        return base.Run(titleChunks, titleParameters);
+    }
+
+    private static MyDocument CreateTitlesDoc(Chunk[] chunks, Parameters p)
+    {
+        var sections = chunks
+            .GroupBy(c => new { c.SectionNumber, c.SectionName })
+            .Select(g => new MySection(g.Key.SectionNumber, g.Key.SectionName, [CreateTitlesSong(g, p)]))
+            .ToArray();
+
+        return new MyDocument(sections, chunks.First().MaxSongNumber);
+    }
+
+    private static MySong CreateTitlesSong(IEnumerable<Chunk> chunks, Parameters parameters)
+    {
+        var songLines = chunks.Select((chunk, i) =>
+            chunk.Lines.First(l => l.LineType == LineType.Norm && !l.NotMy) with
+            {
+                //To colorize each page in a single color
+                NumberForColor = (i + parameters.StarNumber) / parameters.StarNumber,
+                IsFirst = false,
+                IsLast = false
+            });
+
+        return new(1, "Titles", [.. songLines]);
+    }
+
     protected override IEnumerable<Card> CardFromChunk(Chunk chunk, Parameters parameters)
     {
         var header = CreateHeader(chunk, parameters);
-        var number = $"{chunk.SectionNumber:00}.{chunk.SongNumber:00}.{(chunk.ScreenNumber + 1):000}";
+        var number = $"title_{chunk.SectionNumber:00}.{(chunk.ScreenNumber + 1):000}";
         yield return Create(chunk, parameters, header, number, "", CreateAllInOne);
     }
 

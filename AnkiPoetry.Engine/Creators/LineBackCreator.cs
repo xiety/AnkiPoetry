@@ -1,6 +1,6 @@
 ﻿namespace AnkiPoetry.Engine;
 
-public class LineCreatorBack : BaseCreator<Card>
+public class LineBackCreator : BaseCreator<Card>
 {
     protected override IEnumerable<Card> CardFromChunk(Chunk chunk, Parameters parameters)
     {

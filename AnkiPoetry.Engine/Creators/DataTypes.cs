@@ -19,7 +19,6 @@ public record Parameters
     public bool Continuous { get; set; } = true;
     public StarMode StarMode { get; set; } = StarMode.PerChunk;
     public int StarNumber { get; set; } = 5;
-    public bool AddTitles { get; set; } = true;
 }
 
 public enum StarMode

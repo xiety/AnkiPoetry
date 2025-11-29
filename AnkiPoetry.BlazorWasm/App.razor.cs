@@ -22,9 +22,11 @@ public sealed partial class App : IAsyncDisposable
 
     private readonly CreatorInfo[] infos =
     [
-        new(new WordCreator(), "word", "Word", "1. word"),
-        new(new LineCreator(), "line", "Line", "2. line"),
-        new(new PageCreator(), "page", "Page", "3. page"),
+        new(new WordCreator(), "poetry::word", "Word", "1. word"),
+        new(new LineCreator(), "poetry::line", "Line", "2. line"),
+        new(new PageCreator(), "poetry::page", "Page", "3. page"),
+        new(new TitleCreator(), "poetry::page", "Page", "3. page"),
+        new(new LineBackCreator(), "poetry::page", "Page", "3. page"),
     ];
 
     private readonly SampleCreator creator_sample = new();
@@ -99,7 +101,7 @@ public sealed partial class App : IAsyncDisposable
                 var cards = info.Creator.Run(chunks, state.Parameters);
                 info.Csv = CsvSaver.CreateCsv(cards, [
                     "#separator:semicolon",
-                    $"#notetype:poetry::{info.Id}",
+                    $"#notetype:{info.Id}",
                     $"#deck:{state.Parameters.DeckName}::{info.DeckName}"]);
             }
         }

@@ -11,14 +11,13 @@
     <div><div class="parameter-name">Overlap: </div><input type="checkbox" @bind="state.Parameters.OverlapChapters" /></div>
     <div><div class="parameter-name">Numbers: </div><input type="checkbox" @bind="state.Parameters.LineNumbers" /></div>
     <div><div class="parameter-name">Continuous: </div><input type="checkbox" @bind="state.Parameters.Continuous" /></div>
-    <div><div class="parameter-name">Add titles: </div><input type="checkbox" @bind="state.Parameters.AddTitles" /></div>
 </div>
 <div class="json">
     <input @bind:event="onchange" @bind:get="GetJson()" @bind:set="SetJson" />
 </div>
 <div class="item">
     <div class="item-name">Input:</div>
-    <textarea @bind="state.Text" wrap="off" />
+    <textarea @bind="state.Text" />
     <div class="item-buttons">
         <button @onclick="Generate" class="main-button">Generate</button>
     </div>
@@ -27,7 +26,7 @@
 {
     <div class="item">
         <div class="item-name">@info.Title:</div>
-        <textarea id="@info.Id" @bind="info.Csv" wrap="off" />
+        <textarea id="@info.Id" @bind="info.Csv" />
         <div class="item-buttons">
             <button @onclick="@(() => DownloadContent(info.Id, info.FileName))">Download '@info.FileName'</button>
         </div>
