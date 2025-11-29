@@ -81,7 +81,7 @@ public static partial class LoaderText
         if (songs.Count > 0)
             sections.Add(new(sectionNumber, sectionName, [.. songs]));
 
-        return new([.. sections], 100);
+        return new([.. sections]);
     }
 
     private static bool IsNotMy(string text)

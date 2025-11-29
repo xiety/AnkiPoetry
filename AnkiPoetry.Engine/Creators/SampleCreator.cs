@@ -7,7 +7,7 @@ public partial class SampleCreator : BaseCreator<Card>
     protected override IEnumerable<Card> CardFromChunk(Chunk chunk, Parameters parameters)
     {
         var from = chunk.Lines.First();
-        var number = CreateNumber(chunk.MaxSongNumber, chunk.SectionNumber, chunk.SongNumber, from.LineNumber);
+        var number = CreateNumber(chunk, from.LineNumber);
 
         var sb = new StringBuilder();
 

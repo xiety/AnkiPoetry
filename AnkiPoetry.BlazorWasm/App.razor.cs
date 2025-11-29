@@ -25,8 +25,8 @@ public sealed partial class App : IAsyncDisposable
         new(new WordCreator(), "poetry::word", "Word", "1. word"),
         new(new LineCreator(), "poetry::line", "Line", "2. line"),
         new(new PageCreator(), "poetry::page", "Page", "3. page"),
-        new(new TitleCreator(), "poetry::page", "Page", "3. page"),
-        new(new LineBackCreator(), "poetry::page", "Page", "3. page"),
+        new(new TitleCreator(), "poetry::page", "Title", "4. title"),
+        new(new LineBackCreator(), "poetry::line", "Page", "5. line-back"),
     ];
 
     private readonly SampleCreator creator_sample = new();

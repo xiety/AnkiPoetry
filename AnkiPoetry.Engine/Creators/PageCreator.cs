@@ -7,11 +7,14 @@ public partial class PageCreator : BaseCreator<Card>
     protected override IEnumerable<Card> CardFromChunk(Chunk chunk, Parameters parameters)
     {
         var header = CreateHeader(chunk, parameters);
-        var number = $"{chunk.SectionNumber:00}.{chunk.SongNumber:00}.{(chunk.ScreenNumber + 1):000}";
-        yield return Create(chunk, parameters, header, number, "", CreateAllInOne);
+        var number = CreateNumber(chunk, 0);
+        yield return Create(chunk, parameters, header, number);
     }
 
-    private Card Create(Chunk chunk, Parameters parameters, string header, string number, string suffix, Func<int, MyLine, string> func)
+    protected override string CreateNumber(Chunk chunk, int lineNumber)
+        => $"{chunk.SectionNumber:00}.{chunk.SongNumber:00}.{(chunk.ScreenNumber + 1):000}";
+
+    protected Card Create(Chunk chunk, Parameters parameters, string header, string number)
     {
         var sb = new StringBuilder();
         sb.Append(header);
@@ -21,16 +24,16 @@ public partial class PageCreator : BaseCreator<Card>
             var inner_text = line.Text;
 
             if (!line.NotMy && !String.IsNullOrEmpty(line.Text))
-                inner_text = func(index, line);
+                inner_text = CreateAllInOne(index, line);
 
             var text = GetLineText(line, inner_text, parameters);
             sb.Append(AddHr(line, text));
         }
 
-        return new(number + suffix, sb.ToString());
+        return new(number, sb.ToString());
     }
 
-    private string CreateAllInOne(int index, MyLine line)
+    private static string CreateAllInOne(int index, MyLine line)
     {
         var text = line.Text;
         var n = FirstWordIndex(text);

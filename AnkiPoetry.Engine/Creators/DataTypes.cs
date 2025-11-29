@@ -1,6 +1,6 @@
 ﻿namespace AnkiPoetry.Engine;
 
-public record MyDocument(MySection[] Sections, int MaxSongNumber);
+public record MyDocument(MySection[] Sections);
 public record MySection(int SectionNumber, string SectionName, MySong[] Songs);
 public record MySong(int SongNumber, string SongName, MyLine[] Lines);
 public record MyLine(int LineNumber, int ContinuousNumber, int NumberForColor, string Text, LineType LineType, bool IsFirst, bool IsLast, bool NotMy);

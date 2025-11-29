@@ -18,7 +18,7 @@ public static class Chunker
                 foreach (var chunk in ChunksWithOverlap(song.Lines, parameters.ChunkSize))
                 {
                     var header = CreateHeader(section, song, screen_number);
-                    yield return new(doc.MaxSongNumber, header, section.SectionNumber, section.SectionName, song.SongNumber, screen_number, chunk_number, chunk);
+                    yield return new(header, section.SectionNumber, section.SectionName, song.SongNumber, screen_number, chunk_number, chunk);
                     screen_number++;
                     chunk_number++;
                 }
@@ -117,4 +117,4 @@ public static class Chunker
     }
 }
 
-public record Chunk(int MaxSongNumber, string Header, int SectionNumber, string SectionName, int SongNumber, int ScreenNumber, int ChunkNumber, MyLine[] Lines);
+public record Chunk(string Header, int SectionNumber, string SectionName, int SongNumber, int ScreenNumber, int ChunkNumber, MyLine[] Lines);

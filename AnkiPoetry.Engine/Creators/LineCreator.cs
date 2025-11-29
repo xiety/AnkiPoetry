@@ -10,7 +10,7 @@ public class LineCreator : BaseCreator<Card>
 
             if (!to.NotMy && to.LineType != LineType.NextPage)
             {
-                var number = CreateNumber(chunk.MaxSongNumber, chunk.SectionNumber, chunk.SongNumber, to.LineNumber);
+                var number = CreateNumber(chunk, to.LineNumber);
 
                 var beginning = CreateHeader(chunk, parameters) + JoinLines(chunk.Lines[..(i + 1)], parameters);
 

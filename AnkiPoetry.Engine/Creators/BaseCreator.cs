@@ -34,8 +34,8 @@ public abstract class BaseCreator<T>
         return sb.ToString();
     }
 
-    protected virtual string CreateNumber(int maxSongNumber, int sectionNumber, int songNumber, int lineNumber)
-        => $"{sectionNumber:00}.{songNumber:00}.{lineNumber:000}";
+    protected virtual string CreateNumber(Chunk chunk, int lineNumber)
+        => $"{chunk.SectionNumber:00}.{chunk.SongNumber:00}.{lineNumber:000}";
 
     protected static string CreateHeader(Chunk chunk, Parameters parameters)
     {

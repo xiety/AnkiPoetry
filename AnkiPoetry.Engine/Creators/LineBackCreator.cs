@@ -1,6 +1,6 @@
 ﻿namespace AnkiPoetry.Engine;
 
-public class LineBackCreator : BaseCreator<Card>
+public class LineBackCreator : LineCreator
 {
     protected override IEnumerable<Card> CardFromChunk(Chunk chunk, Parameters parameters)
     {
@@ -15,7 +15,7 @@ public class LineBackCreator : BaseCreator<Card>
                 lineToRecall.LineType != LineType.NextPage &&
                 lineToRecall.LineType != LineType.NextSong)
             {
-                var number = CreateNumber(chunk.MaxSongNumber, chunk.SectionNumber, chunk.SongNumber, lineToRecall.LineNumber);
+                var number = CreateNumber(chunk, lineToRecall.LineNumber);
 
                 var beginning = header;
 
@@ -36,14 +36,4 @@ public class LineBackCreator : BaseCreator<Card>
             }
         }
     }
-
-    protected Card CreateCard(string number, string beginning, string ending, MyLine to, Parameters parameters)
-    {
-        var text = MakeCloze(to.Text);
-        var cloze = GetLineText(to, text, parameters);
-        return new(number, beginning + cloze + ending);
-    }
-
-    private static string MakeCloze(string text)
-        => $"{{{{c1::{text}}}}}";
 }
