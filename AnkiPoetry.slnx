@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".github/workflows/main.yml" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="AnkiPoetry.BlazorWasm/AnkiPoetry.BlazorWasm.csproj" />
+  <Project Path="AnkiPoetry.ConsoleApp/AnkiPoetry.ConsoleApp.csproj" />
+  <Project Path="AnkiPoetry.Engine/AnkiPoetry.Engine.csproj" />
+</Solution>

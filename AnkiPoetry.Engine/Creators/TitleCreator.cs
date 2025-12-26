@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace AnkiPoetry.Engine;
+﻿namespace AnkiPoetry.Engine;
 
 public partial class TitleCreator : PageCreator
 {
